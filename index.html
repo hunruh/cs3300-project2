@@ -27,6 +27,10 @@
                 stroke-opacity: 0.5;
                 stroke-width: 1.25px;
             }
+
+            svg {
+            border: solid #ccc 1px;
+            }
     </style>
 </head>
 <body>
@@ -40,6 +44,32 @@
     .await( function (error, disasterDataw, gridMapData) {
     })
        
+// Grid Map
+    var mapSVG = d3.select("svg");
+    d3.csv("data/gridmap-layout-usa.csv", function(data) {
+        data.forEach(function(d) {
+            d.x = +d.x;
+            d.y = +d.y;
+        });
+        drawMap(data);
+
+    });
+
+    function drawMap(arrayofcoordinates) {
+        var linearScale = d3.scaleLinear().domain([0, 0.025]);
+        var states = mapSVG.selectAll("circle")
+            .data(arrayofcoordinates);
+
+        states.enter().append("circle")
+            .attr("cx", function(d) {return linearScale(d.x+4);})
+            .attr("cy", function(d) {return linearScale(d.y+3);})
+            .attr("r", 20)
+            //.merge(states)
+                .style("stroke", "#eee")
+                .style("fill", "blue");
+
+    }
+
 //yearslider
         var svg = d3.select("svg")
         var x = d3.scaleLinear()
