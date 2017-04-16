@@ -53,12 +53,14 @@
             d.y = +d.y;
         });
         drawMap(data, disasterDataw);
+        drawSlider(disasterDataw);
 
     });
         
     })
     
     var currentyear = 1960;
+    var currentstate;
 
     function drawMap(arrayofcoordinates, disasters) {
         var mapSVG = d3.select("svg");
@@ -80,8 +82,9 @@
                             count = count + 1;
                         }
                     })
-                    return "# of Disaster: " + count;
+                    return "# of Disasters: " + count;
                 })
+                currentstate = d.name;
             })
             //.merge(states)
                 .style("stroke", "#eee")
@@ -90,7 +93,9 @@
     }
 
 //yearslider
-        var svg = d3.select("svg")
+    var svg = d3.select("svg")
+    function drawSlider(disasters){
+        
         var x = d3.scaleLinear()
         .domain([1960, 2016])
         .range([0, 350])
@@ -126,8 +131,24 @@
             handle.attr("cx", x(y));
             yeartext.text("Year: " + y);
             currentyear = y;
+            disastertext.text(function(){
+                if (typeof(currentstate) != "undefined"){
+                    var count = 0;
+                    disasters.forEach(function(i){
+                        if(currentstate == i.state  && currentyear == i.year){
+                            count = count + 1;
+                        }
+                    })
+                    return "# of Disasters: " + count;
+                }
+                else{
+                    return "# of Disasters: ";
+                }
+            });
             
         }
+    }
+    
     
     //stateinfo
     var statetext= svg.append("text")
