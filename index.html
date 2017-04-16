@@ -162,7 +162,13 @@
 
     function updateText(state) {
         stateText.text(state);
-        tempText.text(d3.format(".2f")(tempDiffByYear[state][currentYear]) + " degrees above average");
+        
+        var tempDiff = tempDiffByYear[state][currentYear];
+        if( tempDiff < 0 )
+            tempText.text(d3.format(".2f")(-1 * tempDiff) + " degrees below average");
+        else
+            tempText.text(d3.format(".2f")(tempDiff) + " degrees above average");
+
         disasterText.text(function() {
             var numDisasters = disastersByYear[state][currentYear];
             if( numDisasters == 1 )
