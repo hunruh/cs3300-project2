@@ -2,8 +2,8 @@ import csv
 
 # List courtesy of http://stackoverflow.com/questions/32937610/python-dictionary-of-states
 states = [
-	'Alabama','Alaska','Arizona','Arkansas','California','Colorado',
-	'Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho', 
+	'Alabama','Arizona','Arkansas','California','Colorado',
+	'Connecticut','Delaware','Florida','Georgia','Idaho', 
 	'Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana',
 	'Maine' 'Maryland','Massachusetts','Michigan','Minnesota',
 	'Mississippi', 'Missouri','Montana','Nebraska','Nevada',
