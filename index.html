@@ -42,20 +42,26 @@
         return { year: Number(row["Date"]), state: row["State"], incident: row["Incident Description"]};
     })
     .await( function (error, disasterDataw, gridMapData) {
-    })
+        
+    
        
 // Grid Map
-    var mapSVG = d3.select("svg");
+    
     d3.csv("data/gridmap-layout-usa.csv", function(data) {
         data.forEach(function(d) {
             d.x = +d.x;
             d.y = +d.y;
         });
-        drawMap(data);
+        drawMap(data, disasterDataw);
 
     });
+        
+    })
+    
+    var currentyear = 1960;
 
-    function drawMap(arrayofcoordinates) {
+    function drawMap(arrayofcoordinates, disasters) {
+        var mapSVG = d3.select("svg");
         var linearScale = d3.scaleLinear().domain([0, 0.025]);
         var states = mapSVG.selectAll("circle")
             .data(arrayofcoordinates);
@@ -63,7 +69,20 @@
         states.enter().append("circle")
             .attr("cx", function(d) {return linearScale(d.x+4);})
             .attr("cy", function(d) {return linearScale(d.y+3);})
+            .attr("id", function(d) {return d.name;})
             .attr("r", 20)
+            .on("click", function(d) {
+                statetext.text("State: " + d.name);
+                disastertext.text(function(){
+                    var count = 0;
+                    disasters.forEach(function(i){
+                        if(d.name == i.state  && currentyear == i.year){
+                            count = count + 1;
+                        }
+                    })
+                    return "# of Disaster: " + count;
+                })
+            })
             //.merge(states)
                 .style("stroke", "#eee")
                 .style("fill", "blue");
@@ -106,6 +125,19 @@
         function year(y) {
             handle.attr("cx", x(y));
             yeartext.text("Year: " + y);
-        }       
+            currentyear = y;
+            
+        }
+    
+    //stateinfo
+    var statetext= svg.append("text")
+        .text("State:")
+        .attr("transform", "translate(550,525)");
+    var temptext= svg.append("text")
+        .text("Avg. Temperature:")
+        .attr("transform", "translate(550,550)");
+    var disastertext= svg.append("text")
+        .text("# of Disasters:")
+        .attr("transform", "translate(550,575)");
 </script>
 </body>
