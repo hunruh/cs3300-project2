@@ -2,16 +2,16 @@ import csv, os
 
 states = [
 	'Alabama','Arizona','Arkansas','California','Colorado',
-	'Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho', 
+	'Connecticut','Delaware','Florida','Georgia','Idaho', 
 	'Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana',
-	'Maine' 'Maryland','Massachusetts','Michigan','Minnesota',
+	'Maine','Maryland','Massachusetts','Michigan','Minnesota',
 	'Mississippi', 'Missouri','Montana','Nebraska','Nevada',
 	'New Hampshire','New Jersey','New Mexico','New York',
 	'North Carolina','North Dakota','Ohio',    
 	'Oklahoma','Oregon','Pennsylvania','Rhode Island',
-	'South  Carolina','South Dakota','Tennessee','Texas','Utah',
+	'South Carolina','South Dakota','Tennessee','Texas','Utah',
 	'Vermont','Virginia','Washington','West Virginia',
-	'Wisconsin','Wyoming'
+	'Wisconsin','Wyoming',
 ]
 
 
@@ -24,7 +24,7 @@ def process_year(rows):
 	for row in rows:
 		total += float(row['   TAVG'])
 
-	avg = round(total/12, 2)
+	avg = total/12
 
 	new_row['Avg Temperature Index'] = avg
 

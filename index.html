@@ -1,143 +1,231 @@
 <html>
 <head>
-<title>INFO/CS 3300 - Project 2 (asz35, hju3, lgd34)</title>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="http://d3js.org/topojson.v2.min.js"></script>
-<style>
-            .track {
-                stroke: #000;
-                stroke-opacity: 0.3;
-                stroke-width: 10px;
-            }
+    <title>INFO/CS 3300 - Project 2 (asz35, hju3, lgd34)</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="http://d3js.org/topojson.v2.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:300,400,600" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fira Sans', sans-serif;
+        }
 
-            .track-inset {
-                stroke: #ddd;
-                stroke-width: 8px;
-            }
+        .bold {
+            font-weight: 600;
+        }
 
-            .track-overlay {
-                pointer-events: stroke;
-                stroke-width: 50px;
-                cursor: crosshair;
-            }
+        .light {
+            font-weight: 300;
+        }
 
-            .handle {
-                fill: #fff;
-                stroke: #000;
-                stroke-opacity: 0.5;
-                stroke-width: 1.25px;
-            }
+        .track {
+            stroke: #000;
+            stroke-opacity: 0.3;
+            stroke-width: 10px;
+        }
 
-            svg {
+        .track-inset {
+            stroke: #ddd;
+            stroke-width: 8px;
+        }
+
+        .track-overlay {
+            pointer-events: stroke;
+            stroke-width: 50px;
+            cursor: pointer;
+        }
+
+        .handle {
+            fill: #fff;
+            stroke: #000;
+            stroke-opacity: 0.5;
+            stroke-width: 1.25px;
+        }
+
+        svg {
             border: solid #ccc 1px;
-            }
+        }
     </style>
 </head>
 <body>
 <svg width="800px" height="600px"></svg>
 <script>
-// Disaster data from: https://www.fema.gov/disasters/grid/year
+    var currentState = "New York";
+    var currentYear = 2016;
+
+    var stateAvg = {};
+    var tempDiffByYear = {};
+    var disastersByYear = {};
+
+    var gridMap;
+
+    var tempScale;
+
+    // Climate data from NOAA: https://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp
+    // Disaster data from: https://www.fema.gov/disasters/grid/year
+    // Gridmap data used from: https://github.com/kristw/gridmap-layout-usa
+    // (with MIT license)
     d3.queue()
-    .defer(d3.csv, "data/disasters.csv", function(row) {
+    .defer(d3.csv, "data/climate/climate.csv", function(row) {
+        return { year: Number(row["Year"]), state: row["State"], temp: Number(row["Avg Temperature Index"])};
+    })
+    .defer(d3.csv, "data/disasters/disasters.csv", function(row) {
         return { year: Number(row["Date"]), state: row["State"], incident: row["Incident Description"]};
     })
-    .await( function (error, disasterDataw, gridMapData) {
-        
-    
-       
-// Grid Map
-    
-    d3.csv("data/gridmap-layout-usa.csv", function(data) {
-        data.forEach(function(d) {
-            d.x = +d.x;
-            d.y = +d.y;
+    .defer(d3.csv, "data/gridmap-layout-usa.csv")
+    .await( function (error, climateData, disasterData, gridMapData) {
+        // Compute average climate data - visualization will be based on difference from average
+        climateData.forEach(function(d) {
+            if( d.state in stateAvg )
+                stateAvg[d.state] += d.temp;
+            else
+                stateAvg[d.state] = d.temp
         });
-        drawMap(data, disasterDataw);
+        for( state in stateAvg )
+            stateAvg[state] /= 61;
 
+        // Ideally we wouldn't have to iterate again but we need the average to compute the diff from average
+        climateData.forEach(function(d) {
+            if( !(d.state in tempDiffByYear) )
+                tempDiffByYear[d.state] = {}
+            tempDiffByYear[d.state][d.year] = diffFromAvg(d);
+        });
+
+        // Determine the color scale (based on temperature)
+        // Color scheme derived from color brewer
+        var maxTempDiff = d3.max(climateData, diffFromAvg);
+        var minTempDiff = d3.min(climateData, diffFromAvg);
+
+        tempScale = d3.scaleQuantize()
+            .domain([minTempDiff, maxTempDiff])
+            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#f4a582','#fddbc7','#d6604d','#b2182b']);
+
+        console.log(maxTempDiff);
+        console.log(tempScale(3));
+        console.log(tempScale(minTempDiff));
+
+        // Compute the number of disasters per year for each state
+        disasterData.forEach(function(d) {
+            if( !(d.state in disastersByYear) ) {
+                disastersByYear[d.state] = {}
+                for (i = 1956; i <= 2016; i += 1)
+                    disastersByYear[d.state][i] = 0
+            }
+            disastersByYear[d.state][d.year] += 1 
+        });
+
+        // Store the map
+        gridMap = gridMapData;
+
+        drawMap();
     });
-        
-    })
-    
-    var currentyear = 1960;
 
-    function drawMap(arrayofcoordinates, disasters) {
-        var mapSVG = d3.select("svg");
-        var linearScale = d3.scaleLinear().domain([0, 0.025]);
-        var states = mapSVG.selectAll("circle")
-            .data(arrayofcoordinates);
-
-        states.enter().append("circle")
-            .attr("cx", function(d) {return linearScale(d.x+4);})
-            .attr("cy", function(d) {return linearScale(d.y+3);})
-            .attr("id", function(d) {return d.name;})
-            .attr("r", 20)
-            .on("click", function(d) {
-                statetext.text("State: " + d.name);
-                disastertext.text(function(){
-                    var count = 0;
-                    disasters.forEach(function(i){
-                        if(d.name == i.state  && currentyear == i.year){
-                            count = count + 1;
-                        }
-                    })
-                    return "# of Disaster: " + count;
-                })
-            })
-            //.merge(states)
-                .style("stroke", "#eee")
-                .style("fill", "blue");
-
+    function diffFromAvg(climateRow) {
+        return climateRow.temp - stateAvg[climateRow.state];
     }
 
-//yearslider
+    function drawMap() {
+        var mapSVG = d3.select("svg");
+        var states = mapSVG.selectAll("circle")
+            .data(gridMap);
+
+        states.enter().append("circle")
+                .attr("cx", function(d) {return d.x * 63 + 60;})
+                .attr("cy", function(d) {return d.y * 63 + 30;})
+                .attr("id", function(d) {return d.name;})
+                .attr("r", 30)
+                .on("mouseover", function(d) {
+                    updateText(d.name);
+                    d3.select(this).transition().duration(200)
+                        .style("stroke", "#222222")
+                        .style("stroke-width", "3px");
+                })
+                .on("mouseout", function(d) {
+                    updateText(currentState);
+                    d3.select(this).transition().duration(200)
+                        .style("stroke", "#eeeeee")
+                        .style("stroke-width", "1px");
+                })
+                .on("click", function(d) {
+                    currentState = d.name;
+                })
+                .style("stroke", "#eeeeee")
+                .style("fill", function(d) {
+                    return "#ffffff";
+                })
+            .merge(states)
+                .transition().duration(500)
+                .style("fill", function(d) {
+                    return tempScale(tempDiffByYear[d.name][currentYear]);
+                });
+    }
+
+    function updateText(state) {
+        stateText.text(state);
+        tempText.text("Avg. Temperature Index: " + d3.format(".2f")(tempDiffByYear[state][currentYear]));
+        disasterText.text(function() {
+            var numDisasters = disastersByYear[state][currentYear];
+            if( numDisasters == 1 )
+                return numDisasters + " disaster";
+            else
+                return numDisasters + " disasters";
+        });
+    }
+
+        //year slider
         var svg = d3.select("svg")
         var x = d3.scaleLinear()
-        .domain([1960, 2016])
-        .range([0, 350])
-        .clamp(true);
-        var yeartext = svg.append("text")
-        .text("Year: 1960")
-        .attr("transform", "translate(50,525)");
+            .domain([1956, 2016])
+            .range([0, 350])
+            .clamp(true);
+        var yearLabel = svg.append("text")
+            .text("Year:")
+            .attr("class", "light")
+            .attr("transform", "translate(47,530)");
+        var yearText = svg.append("text")
+            .text("2016")
+            .attr("class", "bold")
+            .attr("transform", "translate(87,530)");
         var slider = svg.append("g")
-        .attr("class", "slider")
-        .attr("transform", "translate(50,550)");
+            .attr("class", "slider")
+            .attr("transform", "translate(50,550)");
     
         slider.append("line")
-        .attr("class", "track")
-        .attr("x1", 0)
-        .attr("x2", 350)
-        .attr("stroke-linecap", "round")
-        .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-        .attr("class", "track-inset")
-        .attr("stroke-linecap", "round")
-        .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-        .attr("class", "track-overlay")
-        .attr("stroke-linecap", "round")
-        .call(d3.drag()
-        .on("start.interrupt", function() { slider.interrupt(); })
-        .on("start drag", function() { year(Math.floor(x.invert(d3.event.x))); }));
+            .attr("class", "track")
+            .attr("x1", 0)
+            .attr("x2", 350)
+            .attr("stroke-linecap", "round")
+            .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+            .attr("class", "track-inset")
+            .attr("stroke-linecap", "round")
+            .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+            .attr("class", "track-overlay")
+            .attr("stroke-linecap", "round")
+            .call(d3.drag()
+            .on("start.interrupt", function() { slider.interrupt(); })
+            .on("start drag", function() { year(Math.floor(x.invert(d3.event.x))); }));
 
 
         var handle = slider.insert("circle", ".track-overlay")
+        .attr("cx", x(currentYear))
         .attr("class", "handle")
-        .attr("r", 9);
+        .attr("r", 9)
         
         function year(y) {
             handle.attr("cx", x(y));
-            yeartext.text("Year: " + y);
-            currentyear = y;
-            
+            yearText.text(y);
+            currentYear = y;
+            drawMap();
         }
     
-    //stateinfo
-    var statetext= svg.append("text")
-        .text("State:")
+    //state info
+    var stateText = svg.append("text")
+        .attr("class", "bold")
         .attr("transform", "translate(550,525)");
-    var temptext= svg.append("text")
-        .text("Avg. Temperature:")
+    var tempText = svg.append("text")
+        .attr("class", "light")
         .attr("transform", "translate(550,550)");
-    var disastertext= svg.append("text")
-        .text("# of Disasters:")
+    var disasterText = svg.append("text")
+        .attr("class", "light")
         .attr("transform", "translate(550,575)");
 </script>
 </body>

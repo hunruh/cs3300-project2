@@ -1,5 +1,4 @@
 x,y,key,name
-0,0,AK,Alaska
 11,0,ME,Maine
 9,1,VT,Vermont
 10,1,NH,New Hampshire
@@ -32,9 +31,8 @@ x,y,key,name
 5,4,MO,Missouri
 6,4,KY,Kentucky
 7,4,WV,West Virginia
-8,4,DC,District of Columbia
-9,4,MD,Maryland
-10,4,DE,Delaware
+8,4,MD,Maryland
+9,4,DE,Delaware
 2,5,AZ,Arizona
 3,5,NM,New Mexico
 4,5,OK,Oklahoma
@@ -48,5 +46,4 @@ x,y,key,name
 6,6,AL,Alabama
 7,6,GA,Georgia
 8,6,SC,South Carolina
-0,7,HI,Hawaii
 7,7,FL,Florida

@@ -77,6 +77,7 @@ Date,State,Incident Description
 1962,New York,Severe Storm/Flooding
 1962,North Carolina,Severe Storm/Flooding
 1962,Kentucky,Severe Storm/Flooding
+1962,Maryland,Severe Storm/Flooding
 1962,Virginia,Severe Storm/Flooding
 1962,New Jersey,Severe Storm/Flooding
 1962,West Virginia,Severe Storm/Flooding
@@ -224,6 +225,7 @@ Date,State,Incident Description
 1970,North Dakota,Severe Storm/Flooding
 1970,Texas,Severe Storm/Flooding
 1970,Alabama,Severe Storm/Flooding
+1970,Maine,Winter Storm
 1970,California,Severe Storm/Flooding
 1970,Kentucky,Winter Storm
 1971,Louisiana,Tropical Storm
@@ -232,6 +234,7 @@ Date,State,Incident Description
 1971,Pennsylvania,Severe Storm/Flooding
 1971,New York,Severe Storm/Flooding
 1971,New Jersey,Severe Storm/Flooding
+1971,Maryland,Severe Storm/Flooding
 1971,Nebraska,Severe Storm/Flooding
 1971,Tennessee,Severe Storm/Flooding
 1971,Kentucky,Severe Storm/Flooding
@@ -249,6 +252,7 @@ Date,State,Incident Description
 1972,Virginia,Severe Storm/Flooding
 1972,Virginia,Severe Storm/Flooding
 1972,Pennsylvania,Severe Storm/Flooding
+1972,Maine,Other
 1972,Massachusetts,Other
 1972,Iowa,Severe Storm/Flooding
 1972,New Mexico,Severe Storm/Flooding
@@ -265,6 +269,7 @@ Date,State,Incident Description
 1972,California,Severe Storm/Flooding
 1972,New York,Tropical Storm
 1972,Pennsylvania,Tropical Storm
+1972,Maryland,Tropical Storm
 1972,Florida,Tropical Storm
 1972,Virginia,Tropical Storm
 1972,South Dakota,Severe Storm/Flooding
@@ -277,6 +282,7 @@ Date,State,Incident Description
 1972,Michigan,Winter Storm
 1972,Washington,Severe Storm/Flooding
 1972,New Hampshire,Other
+1972,Maine,Severe Storm/Flooding
 1972,Massachusetts,Severe Storm/Flooding
 1972,Idaho,Severe Storm/Flooding
 1972,West Virginia,Severe Storm/Flooding
@@ -317,6 +323,7 @@ Date,State,Incident Description
 1973,Arkansas,Severe Storm/Flooding
 1973,Alabama,Severe Storm/Flooding
 1973,Florida,Severe Storm/Flooding
+1973,Maine,Severe Storm/Flooding
 1973,Colorado,Winter Storm
 1973,Iowa,Severe Storm/Flooding
 1973,Kentucky,Severe Storm/Flooding
@@ -382,8 +389,10 @@ Date,State,Incident Description
 1974,Oregon,Winter Storm
 1974,California,Severe Storm/Flooding
 1974,New Hampshire,Severe Storm/Flooding
+1974,Maine,Severe Storm/Flooding
 1975,Washington,Severe Storm/Flooding
 1975,Oklahoma,Severe Storm/Flooding
+1975,Maryland,Severe Storm/Flooding
 1975,New York,Severe Storm/Flooding
 1975,Alabama,Severe Storm/Flooding
 1975,Michigan,Severe Storm/Flooding
@@ -426,6 +435,7 @@ Date,State,Incident Description
 1976,Arkansas,Other
 1976,Pennsylvania,Severe Storm/Flooding
 1976,Virginia,Other
+1976,Maryland,Severe Storm/Flooding
 1976,Minnesota,Fire
 1976,Missouri,Other
 1976,California,Tropical Storm
@@ -479,7 +489,9 @@ Date,State,Incident Description
 1977,Idaho,Fire
 1977,North Carolina,Other
 1977,California,Fire
+1977,South Carolina,Other
 1977,Virginia,Other
+1977,Maine,Fire
 1977,Pennsylvania,Severe Storm/Flooding
 1977,Alabama,Other
 1977,Georgia,Other
@@ -514,6 +526,7 @@ Date,State,Incident Description
 1977,Colorado,Other
 1977,Pennsylvania,Winter Storm
 1977,New York,Winter Storm
+1977,Maryland,Winter Storm
 1977,Virginia,Winter Storm
 1977,Utah,Other
 1977,California,Other
@@ -547,6 +560,7 @@ Date,State,Incident Description
 1978,Indiana,Severe Storm/Flooding
 1978,Nebraska,Winter Storm
 1978,Arizona,Severe Storm/Flooding
+1978,Maine,Severe Storm/Flooding
 1978,Rhode Island,Winter Storm
 1978,New Hampshire,Severe Storm/Flooding
 1978,North Dakota,Winter Storm
@@ -567,6 +581,7 @@ Date,State,Incident Description
 1979,Florida,Severe Storm/Flooding
 1979,Louisiana,Severe Storm/Flooding
 1979,Texas,Severe Storm/Flooding
+1979,Maryland,Severe Storm/Flooding
 1979,Mississippi,Tropical Storm
 1979,Alabama,Tropical Storm
 1979,Florida,Tropical Storm
@@ -615,6 +630,7 @@ Date,State,Incident Description
 1980,New Jersey,Drought
 1980,California,Severe Storm/Flooding
 1980,Texas,Tropical Storm
+1980,Maine,Other
 1980,Michigan,Severe Storm/Flooding
 1980,Ohio,Severe Storm/Flooding
 1980,Pennsylvania,Severe Storm/Flooding
@@ -738,6 +754,7 @@ Date,State,Incident Description
 1984,Mississippi,Severe Storm/Flooding
 1984,New York,Severe Storm/Flooding
 1984,New Jersey,Severe Storm/Flooding
+1984,South Carolina,Severe Storm/Flooding
 1984,North Carolina,Severe Storm/Flooding
 1984,Florida,Winter Storm
 1984,Idaho,Winter Storm
@@ -784,6 +801,7 @@ Date,State,Incident Description
 1986,Illinois,Severe Storm/Flooding
 1986,Wisconsin,Severe Storm/Flooding
 1986,Michigan,Severe Storm/Flooding
+1986,Maryland,Severe Storm/Flooding
 1986,Texas,Severe Storm/Flooding
 1986,New Hampshire,Severe Storm/Flooding
 1986,Wisconsin,Severe Storm/Flooding
@@ -822,6 +840,7 @@ Date,State,Incident Description
 1987,New York,Severe Storm/Flooding
 1987,Massachusetts,Severe Storm/Flooding
 1987,New Hampshire,Severe Storm/Flooding
+1987,Maine,Severe Storm/Flooding
 1987,Mississippi,Severe Storm/Flooding
 1988,North Carolina,Severe Storm/Flooding
 1988,Arkansas,Severe Storm/Flooding
@@ -840,7 +859,9 @@ Date,State,Incident Description
 1989,Kentucky,Severe Storm/Flooding
 1989,California,Other
 1989,North Carolina,Tropical Storm
+1989,South Carolina,Tropical Storm
 1989,Vermont,Severe Storm/Flooding
+1989,Maryland,Severe Storm/Flooding
 1989,Texas,Tropical Storm
 1989,Louisiana,Tropical Storm
 1989,Connecticut,Severe Storm/Flooding
@@ -848,6 +869,7 @@ Date,State,Incident Description
 1989,Kentucky,Severe Storm/Flooding
 1989,Louisiana,Severe Storm/Flooding
 1989,Ohio,Severe Storm/Flooding
+1989,Maine,Severe Storm/Flooding
 1989,Louisiana,Severe Storm/Flooding
 1989,Texas,Severe Storm/Flooding
 1989,North Carolina,Severe Storm/Flooding
@@ -862,6 +884,7 @@ Date,State,Incident Description
 1990,Indiana,Severe Storm/Flooding
 1990,Washington,Severe Storm/Flooding
 1990,Colorado,Fire
+1990,South Carolina,Severe Storm/Flooding
 1990,Georgia,Severe Storm/Flooding
 1990,South Dakota,Fire
 1990,Iowa,Severe Storm/Flooding
@@ -898,12 +921,14 @@ Date,State,Incident Description
 1991,Minnesota,Winter Storm
 1991,Washington,Fire
 1991,New Hampshire,Other
+1991,Maine,Other
 1991,Massachusetts,Other
 1991,California,Fire
 1991,Washington,Fire
 1991,New York,Tropical Storm
 1991,New Hampshire,Tropical Storm
 1991,Connecticut,Tropical Storm
+1991,Maine,Tropical Storm
 1991,Massachusetts,Tropical Storm
 1991,Rhode Island,Tropical Storm
 1991,Wisconsin,Severe Storm/Flooding
@@ -916,6 +941,7 @@ Date,State,Incident Description
 1991,Louisiana,Severe Storm/Flooding
 1991,Kansas,Severe Storm/Flooding
 1991,Louisiana,Severe Storm/Flooding
+1991,Maine,Winter Storm
 1991,Texas,Severe Storm/Flooding
 1991,Indiana,Winter Storm
 1991,New York,Winter Storm
@@ -962,10 +988,12 @@ Date,State,Incident Description
 1992,New Mexico,Severe Storm/Flooding
 1992,Oregon,Fire
 1992,Oregon,Fire
+1992,Maine,Fire
 1992,Virginia,Severe Storm/Flooding
 1992,California,Other
 1992,California,Fire
 1992,Illinois,Severe Storm/Flooding
+1992,Maine,Winter Storm
 1992,Texas,Severe Storm/Flooding
 1992,Mississippi,Severe Storm/Flooding
 1992,Vermont,Winter Storm
@@ -999,6 +1027,7 @@ Date,State,Incident Description
 1993,Vermont,Winter Storm
 1993,Oklahoma,Severe Storm/Flooding
 1993,Missouri,Severe Storm/Flooding
+1993,Maine,Winter Storm
 1993,Oregon,Other
 1993,Oklahoma,Severe Storm/Flooding
 1993,Iowa,Severe Storm/Flooding
@@ -1016,8 +1045,10 @@ Date,State,Incident Description
 1993,Pennsylvania,Winter Storm
 1993,Massachusetts,Winter Storm
 1993,Rhode Island,Winter Storm
+1993,Maryland,Winter Storm
 1993,Georgia,Winter Storm
 1993,Alabama,Winter Storm
+1993,Maine,Winter Storm
 1993,Tennessee,Winter Storm
 1993,Florida,Winter Storm
 1993,Georgia,Severe Storm/Flooding
@@ -1057,6 +1088,7 @@ Date,State,Incident Description
 1994,Arizona,Fire
 1994,South Dakota,Severe Storm/Flooding
 1994,Arizona,Fire
+1994,Maine,Winter Storm
 1994,Michigan,Winter Storm
 1994,Nebraska,Winter Storm
 1994,Texas,Severe Storm/Flooding
@@ -1069,6 +1101,7 @@ Date,State,Incident Description
 1994,Georgia,Severe Storm/Flooding
 1994,Alabama,Severe Storm/Flooding
 1994,Kentucky,Winter Storm
+1994,Maryland,Winter Storm
 1994,Delaware,Winter Storm
 1994,Virginia,Winter Storm
 1994,Pennsylvania,Winter Storm
@@ -1120,10 +1153,14 @@ Date,State,Incident Description
 1996,New Jersey,Severe Storm/Flooding
 1996,New York,Severe Storm/Flooding
 1996,New Hampshire,Severe Storm/Flooding
+1996,Maine,Severe Storm/Flooding
 1996,Massachusetts,Severe Storm/Flooding
+1996,Maine,Severe Storm/Flooding
 1996,California,Fire
 1996,Massachusetts,Severe Storm/Flooding
 1996,Florida,Severe Storm/Flooding
+1996,South Carolina,Tropical Storm
+1996,Maryland,Tropical Storm
 1996,Pennsylvania,Tropical Storm
 1996,West Virginia,Tropical Storm
 1996,Virginia,Tropical Storm
@@ -1157,6 +1194,7 @@ Date,State,Incident Description
 1996,Minnesota,Severe Storm/Flooding
 1996,Texas,Fire
 1996,West Virginia,Severe Storm/Flooding
+1996,Maine,Severe Storm/Flooding
 1996,Colorado,Fire
 1996,Montana,Severe Storm/Flooding
 1996,Illinois,Severe Storm/Flooding
@@ -1201,6 +1239,7 @@ Date,State,Incident Description
 1996,Texas,Fire
 1996,Texas,Fire
 1996,Texas,Fire
+1996,Maine,Severe Storm/Flooding
 1996,Texas,Fire
 1996,Texas,Fire
 1996,Oklahoma,Fire
@@ -1242,6 +1281,7 @@ Date,State,Incident Description
 1996,Rhode Island,Winter Storm
 1996,Massachusetts,Winter Storm
 1996,Connecticut,Winter Storm
+1996,Maryland,Severe Storm/Flooding
 1996,Pennsylvania,Severe Storm/Flooding
 1996,Virginia,Winter Storm
 1996,Kentucky,Winter Storm
@@ -1251,6 +1291,7 @@ Date,State,Incident Description
 1996,North Carolina,Winter Storm
 1996,Delaware,Winter Storm
 1996,New York,Winter Storm
+1996,Maryland,Winter Storm
 1996,Minnesota,Winter Storm
 1996,South Dakota,Winter Storm
 1996,Washington,Severe Storm/Flooding
@@ -1327,6 +1368,7 @@ Date,State,Incident Description
 1998,Texas,Fire
 1998,Texas,Fire
 1998,Texas,Fire
+1998,South Carolina,Tropical Storm
 1998,Washington,Fire
 1998,Texas,Fire
 1998,North Carolina,Tropical Storm
@@ -1357,6 +1399,7 @@ Date,State,Incident Description
 1998,New York,Severe Storm/Flooding
 1998,Iowa,Severe Storm/Flooding
 1998,New Hampshire,Severe Storm/Flooding
+1998,Maine,Severe Storm/Flooding
 1998,New Mexico,Fire
 1998,Texas,Fire
 1998,West Virginia,Severe Storm/Flooding
@@ -1411,11 +1454,13 @@ Date,State,Incident Description
 1998,Vermont,Winter Storm
 1998,North Carolina,Severe Storm/Flooding
 1998,Tennessee,Severe Storm/Flooding
+1998,Maine,Winter Storm
 1998,New York,Winter Storm
 1998,Florida,Severe Storm/Flooding
 1999,Massachusetts,Fire
 1999,Texas,Fire
 1999,Kentucky,Fire
+1999,Maine,Tropical Storm
 1999,Vermont,Tropical Storm
 1999,Texas,Fire
 1999,Florida,Tropical Storm
@@ -1423,11 +1468,13 @@ Date,State,Incident Description
 1999,Florida,Tropical Storm
 1999,Arizona,Severe Storm/Flooding
 1999,Alabama,Fire
+1999,Maryland,Tropical Storm
 1999,Connecticut,Tropical Storm
 1999,Pennsylvania,Tropical Storm
 1999,New Mexico,Severe Storm/Flooding
 1999,Florida,Tropical Storm
 1999,Delaware,Tropical Storm
+1999,South Carolina,Tropical Storm
 1999,Texas,Fire
 1999,New York,Tropical Storm
 1999,Alabama,Fire
@@ -1445,6 +1492,7 @@ Date,State,Incident Description
 1999,Texas,Fire
 1999,North Carolina,Tropical Storm
 1999,North Carolina,Tropical Storm
+1999,South Carolina,Tropical Storm
 1999,Florida,Tropical Storm
 1999,Georgia,Tropical Storm
 1999,North Carolina,Tropical Storm
@@ -1509,6 +1557,7 @@ Date,State,Incident Description
 1999,Mississippi,Winter Storm
 1999,Arkansas,Severe Storm/Flooding
 1999,Louisiana,Winter Storm
+1999,Maine,Severe Storm/Flooding
 1999,Tennessee,Severe Storm/Flooding
 1999,Tennessee,Winter Storm
 1999,New York,Winter Storm
@@ -1601,8 +1650,10 @@ Date,State,Incident Description
 2000,New Mexico,Fire
 2000,New Mexico,Fire
 2000,Kansas,Severe Storm/Flooding
+2000,Maine,Severe Storm/Flooding
 2000,New Mexico,Fire
 2000,Florida,Fire
+2000,Maryland,Winter Storm
 2000,Texas,Severe Storm/Flooding
 2000,Alabama,Severe Storm/Flooding
 2000,Missouri,Fire
@@ -1614,6 +1665,7 @@ Date,State,Incident Description
 2000,Alabama,Winter Storm
 2000,Georgia,Severe Storm/Flooding
 2000,Louisiana,Winter Storm
+2000,South Carolina,Winter Storm
 2000,North Carolina,Winter Storm
 2000,Georgia,Winter Storm
 2000,Nevada,Fire
@@ -1631,6 +1683,7 @@ Date,State,Incident Description
 2001,West Virginia,Fire
 2001,West Virginia,Fire
 2001,Tennessee,Fire
+2001,South Carolina,Fire
 2001,Tennessee,Fire
 2001,Kentucky,Fire
 2001,Kentucky,Fire
@@ -1681,6 +1734,7 @@ Date,State,Incident Description
 2001,Colorado,Severe Storm/Flooding
 2001,Florida,Fire
 2001,Nebraska,Severe Storm/Flooding
+2001,Maine,Severe Storm/Flooding
 2001,Minnesota,Severe Storm/Flooding
 2001,Florida,Fire
 2001,Wisconsin,Severe Storm/Flooding
@@ -1695,6 +1749,7 @@ Date,State,Incident Description
 2001,Massachusetts,Severe Storm/Flooding
 2001,Massachusetts,Winter Storm
 2001,New Hampshire,Winter Storm
+2001,Maine,Winter Storm
 2001,Florida,Fire
 2001,Arkansas,Severe Storm/Flooding
 2001,Alabama,Severe Storm/Flooding
@@ -1772,6 +1827,7 @@ Date,State,Incident Description
 2002,Iowa,Severe Storm/Flooding
 2002,Arizona,Fire
 2002,Colorado,Fire
+2002,South Carolina,Fire
 2002,Wyoming,Fire
 2002,California,Fire
 2002,Minnesota,Severe Storm/Flooding
@@ -1806,6 +1862,7 @@ Date,State,Incident Description
 2002,West Virginia,Severe Storm/Flooding
 2002,Virginia,Severe Storm/Flooding
 2002,New Mexico,Fire
+2002,Maryland,Severe Storm/Flooding
 2002,Colorado,Fire
 2002,Arizona,Fire
 2002,Colorado,Fire
@@ -1847,6 +1904,7 @@ Date,State,Incident Description
 2003,Michigan,Other
 2003,Delaware,Tropical Storm
 2003,Delaware,Tropical Storm
+2003,Maryland,Tropical Storm
 2003,North Carolina,Tropical Storm
 2003,Virginia,Tropical Storm
 2003,New Hampshire,Severe Storm/Flooding
@@ -1900,6 +1958,7 @@ Date,State,Incident Description
 2003,Kentucky,Severe Storm/Flooding
 2003,Mississippi,Severe Storm/Flooding
 2003,Illinois,Severe Storm/Flooding
+2003,Maine,Winter Storm
 2003,New York,Winter Storm
 2003,Alabama,Severe Storm/Flooding
 2003,Oklahoma,Severe Storm/Flooding
@@ -1920,7 +1979,9 @@ Date,State,Incident Description
 2003,Ohio,Winter Storm
 2003,Pennsylvania,Winter Storm
 2003,West Virginia,Winter Storm
+2003,Maryland,Winter Storm
 2003,Kentucky,Winter Storm
+2003,Maine,Winter Storm
 2003,Connecticut,Winter Storm
 2003,Massachusetts,Winter Storm
 2003,New Hampshire,Winter Storm
@@ -1928,12 +1989,14 @@ Date,State,Incident Description
 2003,Oklahoma,Winter Storm
 2003,Louisiana,Other
 2003,Texas,Other
+2003,South Carolina,Winter Storm
 2003,California,Fire
 2003,Arkansas,Winter Storm
 2004,Delaware,Tropical Storm
 2004,Virginia,Tropical Storm
 2004,Minnesota,Severe Storm/Flooding
 2004,Tennessee,Severe Storm/Flooding
+2004,South Carolina,Tropical Storm
 2004,New York,Severe Storm/Flooding
 2004,New Jersey,Tropical Storm
 2004,New York,Tropical Storm
@@ -1950,6 +2013,7 @@ Date,State,Incident Description
 2004,Florida,Tropical Storm
 2004,Mississippi,Tropical Storm
 2004,Louisiana,Tropical Storm
+2004,South Carolina,Tropical Storm
 2004,Alabama,Tropical Storm
 2004,California,Fire
 2004,North Carolina,Tropical Storm
@@ -1958,6 +2022,7 @@ Date,State,Incident Description
 2004,Virginia,Tropical Storm
 2004,California,Fire
 2004,California,Fire
+2004,South Carolina,Tropical Storm
 2004,Indiana,Severe Storm/Flooding
 2004,Nevada,Fire
 2004,Nevada,Fire
@@ -2024,7 +2089,11 @@ Date,State,Incident Description
 2004,Colorado,Fire
 2004,New York,Winter Storm
 2004,Oregon,Winter Storm
+2004,South Carolina,Winter Storm
+2004,Maine,Winter Storm
 2004,Ohio,Severe Storm/Flooding
+2004,Maine,Winter Storm
+2004,Maine,Winter Storm
 2004,Connecticut,Winter Storm
 2004,New Hampshire,Winter Storm
 2004,Massachusetts,Winter Storm
@@ -2061,6 +2130,7 @@ Date,State,Incident Description
 2005,Louisiana,Tropical Storm
 2005,Florida,Tropical Storm
 2005,New Hampshire,Tropical Storm
+2005,Maine,Tropical Storm
 2005,Rhode Island,Tropical Storm
 2005,New Jersey,Tropical Storm
 2005,North Carolina,Tropical Storm
@@ -2071,6 +2141,7 @@ Date,State,Incident Description
 2005,Idaho,Tropical Storm
 2005,Connecticut,Tropical Storm
 2005,Massachusetts,Tropical Storm
+2005,Maryland,Tropical Storm
 2005,Nevada,Tropical Storm
 2005,Montana,Tropical Storm
 2005,North Dakota,Tropical Storm
@@ -2081,6 +2152,7 @@ Date,State,Incident Description
 2005,Alabama,Tropical Storm
 2005,Iowa,Tropical Storm
 2005,Kansas,Tropical Storm
+2005,South Carolina,Tropical Storm
 2005,Pennsylvania,Tropical Storm
 2005,South Dakota,Tropical Storm
 2005,Missouri,Tropical Storm
@@ -2131,6 +2203,7 @@ Date,State,Incident Description
 2005,South Dakota,Fire
 2005,Alabama,Tropical Storm
 2005,Idaho,Severe Storm/Flooding
+2005,Maine,Winter Storm
 2005,Utah,Fire
 2005,Nevada,Fire
 2005,Nebraska,Severe Storm/Flooding
@@ -2140,14 +2213,18 @@ Date,State,Incident Description
 2005,Arizona,Fire
 2005,Arizona,Fire
 2005,New Hampshire,Winter Storm
+2005,Maine,Winter Storm
 2005,New York,Severe Storm/Flooding
 2005,New Jersey,Severe Storm/Flooding
 2005,South Dakota,Fire
 2005,Pennsylvania,Severe Storm/Flooding
 2005,Arizona,Severe Storm/Flooding
 2005,California,Severe Storm/Flooding
+2005,Maine,Winter Storm
 2005,New Hampshire,Winter Storm
 2005,New Hampshire,Winter Storm
+2005,Maine,Winter Storm
+2005,Maine,Winter Storm
 2005,Nevada,Severe Storm/Flooding
 2005,Nevada,Winter Storm
 2005,Massachusetts,Winter Storm
@@ -2214,6 +2291,7 @@ Date,State,Incident Description
 2006,New Jersey,Severe Storm/Flooding
 2006,Delaware,Severe Storm/Flooding
 2006,Ohio,Severe Storm/Flooding
+2006,Maryland,Severe Storm/Flooding
 2006,New York,Severe Storm/Flooding
 2006,Pennsylvania,Severe Storm/Flooding
 2006,Texas,Fire
@@ -2232,6 +2310,7 @@ Date,State,Incident Description
 2006,North Dakota,Severe Storm/Flooding
 2006,Arizona,Fire
 2006,Texas,Fire
+2006,Maine,Severe Storm/Flooding
 2006,New Hampshire,Severe Storm/Flooding
 2006,Massachusetts,Severe Storm/Flooding
 2006,Washington,Severe Storm/Flooding
@@ -2253,12 +2332,14 @@ Date,State,Incident Description
 2006,Missouri,Severe Storm/Flooding
 2006,New Mexico,Fire
 2006,Idaho,Severe Storm/Flooding
+2006,Maine,Winter Storm
 2006,California,Fire
 2006,Texas,Fire
 2006,California,Severe Storm/Flooding
 2006,Nevada,Severe Storm/Flooding
 2006,Nebraska,Winter Storm
 2006,Kansas,Winter Storm
+2006,South Carolina,Winter Storm
 2006,Texas,Fire
 2006,Oklahoma,Fire
 2006,Texas,Fire
@@ -2342,6 +2423,7 @@ Date,State,Incident Description
 2007,Texas,Tropical Storm
 2007,Montana,Fire
 2007,Wyoming,Fire
+2007,Maine,Severe Storm/Flooding
 2007,Montana,Fire
 2007,Vermont,Severe Storm/Flooding
 2007,Nebraska,Severe Storm/Flooding
@@ -2395,7 +2477,9 @@ Date,State,Incident Description
 2007,New Hampshire,Severe Storm/Flooding
 2007,Georgia,Fire
 2007,New Jersey,Severe Storm/Flooding
+2007,Maine,Severe Storm/Flooding
 2007,New York,Severe Storm/Flooding
+2007,Maine,Severe Storm/Flooding
 2007,Georgia,Fire
 2007,New Mexico,Severe Storm/Flooding
 2007,Iowa,Winter Storm
@@ -2424,6 +2508,7 @@ Date,State,Incident Description
 2007,Colorado,Winter Storm
 2007,Colorado,Winter Storm
 2008,New York,Winter Storm
+2008,Maine,Winter Storm
 2008,Massachusetts,Winter Storm
 2008,New Hampshire,Winter Storm
 2008,South Dakota,Winter Storm
@@ -2454,6 +2539,7 @@ Date,State,Incident Description
 2008,Louisiana,Tropical Storm
 2008,Texas,Tropical Storm
 2008,Alabama,Tropical Storm
+2008,Maine,Severe Storm/Flooding
 2008,Florida,Tropical Storm
 2008,New Hampshire,Severe Storm/Flooding
 2008,Louisiana,Tropical Storm
@@ -2516,6 +2602,7 @@ Date,State,Incident Description
 2008,Oklahoma,Severe Storm/Flooding
 2008,Florida,Fire
 2008,Oklahoma,Severe Storm/Flooding
+2008,Maine,Severe Storm/Flooding
 2008,Mississippi,Severe Storm/Flooding
 2008,Oklahoma,Severe Storm/Flooding
 2008,Texas,Fire
@@ -2592,6 +2679,7 @@ Date,State,Incident Description
 2009,California,Fire
 2009,Iowa,Severe Storm/Flooding
 2009,Nebraska,Severe Storm/Flooding
+2009,Maine,Severe Storm/Flooding
 2009,Washington,Fire
 2009,Nevada,Fire
 2009,Tennessee,Severe Storm/Flooding
@@ -2616,6 +2704,7 @@ Date,State,Incident Description
 2009,California,Fire
 2009,Alabama,Severe Storm/Flooding
 2009,Arkansas,Severe Storm/Flooding
+2009,South Carolina,Fire
 2009,Georgia,Severe Storm/Flooding
 2009,Indiana,Severe Storm/Flooding
 2009,Florida,Severe Storm/Flooding
@@ -2660,6 +2749,7 @@ Date,State,Incident Description
 2009,Kentucky,Winter Storm
 2009,Arkansas,Winter Storm
 2009,Vermont,Winter Storm
+2009,Maine,Winter Storm
 2009,Colorado,Fire
 2009,Massachusetts,Winter Storm
 2009,New Hampshire,Winter Storm
@@ -2705,6 +2795,7 @@ Date,State,Incident Description
 2010,Montana,Severe Storm/Flooding
 2010,Minnesota,Severe Storm/Flooding
 2010,Nevada,Fire
+2010,Maine,Severe Storm/Flooding
 2010,Texas,Tropical Storm
 2010,West Virginia,Severe Storm/Flooding
 2010,Arizona,Fire
@@ -2718,6 +2809,7 @@ Date,State,Incident Description
 2010,New Hampshire,Severe Storm/Flooding
 2010,Kentucky,Severe Storm/Flooding
 2010,California,Other
+2010,Maryland,Winter Storm
 2010,Tennessee,Severe Storm/Flooding
 2010,Massachusetts,Other
 2010,Alabama,Severe Storm/Flooding
@@ -2738,6 +2830,7 @@ Date,State,Incident Description
 2010,New Hampshire,Winter Storm
 2010,Massachusetts,Severe Storm/Flooding
 2010,Rhode Island,Severe Storm/Flooding
+2010,Maine,Winter Storm
 2010,New Jersey,Winter Storm
 2010,Minnesota,Severe Storm/Flooding
 2010,Arizona,Winter Storm
@@ -2753,6 +2846,7 @@ Date,State,Incident Description
 2010,Iowa,Winter Storm
 2010,Nebraska,Winter Storm
 2010,Oklahoma,Winter Storm
+2010,Maryland,Winter Storm
 2010,Virginia,Winter Storm
 2010,New Jersey,Winter Storm
 2010,Arkansas,Severe Storm/Flooding
@@ -2772,11 +2866,14 @@ Date,State,Incident Description
 2011,Connecticut,Severe Storm/Flooding
 2011,Louisiana,Tropical Storm
 2011,New Jersey,Tropical Storm
+2011,Maryland,Tropical Storm
 2011,Nevada,Fire
 2011,Delaware,Tropical Storm
 2011,Kansas,Severe Storm/Flooding
+2011,Maryland,Tropical Storm
 2011,New Jersey,Severe Storm/Flooding
 2011,New York,Tropical Storm
+2011,Maine,Tropical Storm
 2011,Pennsylvania,Tropical Storm
 2011,California,Fire
 2011,California,Fire
@@ -2818,6 +2915,7 @@ Date,State,Incident Description
 2011,Vermont,Tropical Storm
 2011,Delaware,Tropical Storm
 2011,Connecticut,Tropical Storm
+2011,Maryland,Tropical Storm
 2011,New Hampshire,Tropical Storm
 2011,New Jersey,Tropical Storm
 2011,Rhode Island,Tropical Storm
@@ -2984,11 +3082,13 @@ Date,State,Incident Description
 2011,New Jersey,Winter Storm
 2011,Missouri,Winter Storm
 2011,Oklahoma,Winter Storm
+2011,Maine,Severe Storm/Flooding
 2011,California,Winter Storm
 2012,Massachusetts,Tropical Storm
 2012,New Hampshire,Tropical Storm
 2012,West Virginia,Tropical Storm
 2012,Virginia,Tropical Storm
+2012,Maryland,Tropical Storm
 2012,Delaware,Tropical Storm
 2012,Utah,Severe Storm/Flooding
 2012,Rhode Island,Tropical Storm
@@ -3001,6 +3101,7 @@ Date,State,Incident Description
 2012,Rhode Island,Tropical Storm
 2012,Pennsylvania,Tropical Storm
 2012,Virginia,Tropical Storm
+2012,Maryland,Tropical Storm
 2012,Massachusetts,Tropical Storm
 2012,New York,Tropical Storm
 2012,New Jersey,Tropical Storm
@@ -3042,6 +3143,7 @@ Date,State,Incident Description
 2012,Oklahoma,Fire
 2012,Wisconsin,Severe Storm/Flooding
 2012,Montana,Fire
+2012,Maryland,Severe Storm/Flooding
 2012,Oklahoma,Fire
 2012,Virginia,Severe Storm/Flooding
 2012,West Virginia,Severe Storm/Flooding
@@ -3166,6 +3268,7 @@ Date,State,Incident Description
 2013,Massachusetts,Winter Storm
 2013,Massachusetts,Other
 2013,Oklahoma,Winter Storm
+2013,Maine,Winter Storm
 2013,Rhode Island,Winter Storm
 2013,Connecticut,Winter Storm
 2013,New Hampshire,Winter Storm
@@ -3238,11 +3341,14 @@ Date,State,Incident Description
 2014,Indiana,Winter Storm
 2014,Montana,Winter Storm
 2014,Tennessee,Winter Storm
+2014,Maryland,Winter Storm
 2014,Oregon,Winter Storm
 2014,Washington,Severe Storm/Flooding
 2014,North Carolina,Winter Storm
 2014,Washington,Severe Storm/Flooding
+2014,South Carolina,Winter Storm
 2014,Georgia,Winter Storm
+2014,South Carolina,Winter Storm
 2014,Georgia,Winter Storm
 2014,Pennsylvania,Winter Storm
 2014,Oklahoma,Winter Storm
@@ -3258,6 +3364,8 @@ Date,State,Incident Description
 2015,Washington,Other
 2015,Texas,Fire
 2015,Wyoming,Fire
+2015,South Carolina,Severe Storm/Flooding
+2015,South Carolina,Severe Storm/Flooding
 2015,California,Fire
 2015,Oregon,Fire
 2015,Washington,Fire
@@ -3317,6 +3425,7 @@ Date,State,Incident Description
 2015,Tennessee,Winter Storm
 2015,West Virginia,Winter Storm
 2015,New Hampshire,Winter Storm
+2015,Maine,Winter Storm
 2015,Vermont,Winter Storm
 2015,Mississippi,Severe Storm/Flooding
 2016,Tennessee,Fire
@@ -3326,6 +3435,7 @@ Date,State,Incident Description
 2016,Tennessee,Fire
 2016,North Carolina,Fire
 2016,Georgia,Fire
+2016,South Carolina,Fire
 2016,North Carolina,Fire
 2016,Tennessee,Fire
 2016,Tennessee,Fire
@@ -3337,16 +3447,19 @@ Date,State,Incident Description
 2016,Kansas,Severe Storm/Flooding
 2016,Colorado,Fire
 2016,Nevada,Fire
+2016,South Carolina,Tropical Storm
 2016,North Carolina,Tropical Storm
 2016,Georgia,Tropical Storm
 2016,Florida,Tropical Storm
 2016,North Carolina,Tropical Storm
 2016,Georgia,Tropical Storm
+2016,South Carolina,Tropical Storm
 2016,Florida,Tropical Storm
 2016,Colorado,Fire
 2016,Nevada,Fire
 2016,Iowa,Severe Storm/Flooding
 2016,Florida,Tropical Storm
+2016,Maryland,Severe Storm/Flooding
 2016,Oregon,Fire
 2016,Washington,Fire
 2016,Kentucky,Severe Storm/Flooding
@@ -3397,6 +3510,7 @@ Date,State,Incident Description
 2016,New Jersey,Winter Storm
 2016,Louisiana,Severe Storm/Flooding
 2016,Virginia,Winter Storm
+2016,Maryland,Winter Storm
 2016,Georgia,Severe Storm/Flooding
 2016,Oklahoma,Fire
 2016,Oregon,Winter Storm
