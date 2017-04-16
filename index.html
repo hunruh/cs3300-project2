@@ -47,7 +47,7 @@
     </style>
 </head>
 <body>
-<svg width="800px" height="600px"></svg>
+<svg width="800px" height="700px"></svg>
 <script>
     var currentState = "New York";
     var currentYear = 2016;
@@ -117,6 +117,7 @@
         gridMap = gridMapData;
 
         drawMap();
+        drawSlider();
     });
 
     function diffFromAvg(climateRow) {
@@ -130,7 +131,7 @@
 
         states.enter().append("circle")
                 .attr("cx", function(d) {return d.x * 63 + 60;})
-                .attr("cy", function(d) {return d.y * 63 + 30;})
+                .attr("cy", function(d) {return d.y * 63 + 60;})
                 .attr("id", function(d) {return d.name;})
                 .attr("r", 30)
                 .on("mouseover", function(d) {
@@ -161,7 +162,7 @@
 
     function updateText(state) {
         stateText.text(state);
-        tempText.text("Avg. Temperature Index: " + d3.format(".2f")(tempDiffByYear[state][currentYear]));
+        tempText.text(d3.format(".2f")(tempDiffByYear[state][currentYear]) + " degrees above average");
         disasterText.text(function() {
             var numDisasters = disastersByYear[state][currentYear];
             if( numDisasters == 1 )
@@ -171,8 +172,9 @@
         });
     }
 
-        //year slider
-        var svg = d3.select("svg")
+    //year slider
+    var svg = d3.select("svg")
+    function drawSlider() {
         var x = d3.scaleLinear()
             .domain([1956, 2016])
             .range([0, 350])
@@ -180,14 +182,14 @@
         var yearLabel = svg.append("text")
             .text("Year:")
             .attr("class", "light")
-            .attr("transform", "translate(47,530)");
+            .attr("transform", "translate(47,580)");
         var yearText = svg.append("text")
             .text("2016")
             .attr("class", "bold")
-            .attr("transform", "translate(87,530)");
+            .attr("transform", "translate(87,580)");
         var slider = svg.append("g")
             .attr("class", "slider")
-            .attr("transform", "translate(50,550)");
+            .attr("transform", "translate(50,600)");
     
         slider.append("line")
             .attr("class", "track")
@@ -216,16 +218,18 @@
             currentYear = y;
             drawMap();
         }
+    }
+    
     
     //state info
     var stateText = svg.append("text")
         .attr("class", "bold")
-        .attr("transform", "translate(550,525)");
+        .attr("transform", "translate(550,575)");
     var tempText = svg.append("text")
         .attr("class", "light")
-        .attr("transform", "translate(550,550)");
+        .attr("transform", "translate(550,600)");
     var disasterText = svg.append("text")
         .attr("class", "light")
-        .attr("transform", "translate(550,575)");
+        .attr("transform", "translate(550,625)");
 </script>
 </body>
