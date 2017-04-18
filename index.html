@@ -56,6 +56,9 @@
     var tempDiffByYear = {};
     var disastersByYear = {};
 
+    var disasterDataG = {};
+    var disasterIncidents = [];
+
     var gridMap;
 
     var tempScale;
@@ -102,8 +105,12 @@
         console.log(maxTempDiff);
         console.log(tempScale(3));
         console.log(tempScale(minTempDiff));
+        console.log(disasterData);
+        console.log(disasterData[0].year);
 
         // Compute the number of disasters per year for each state
+
+        disasterDataG = disasterData;
         disasterData.forEach(function(d) {
             if( !(d.state in disastersByYear) ) {
                 disastersByYear[d.state] = {}
@@ -122,6 +129,18 @@
 
     function diffFromAvg(climateRow) {
         return climateRow.temp - stateAvg[climateRow.state];
+    }
+
+    function getDisasterIncidents(year) {
+        disasterIncidents = [];
+        index = 0;
+        while (disasterDataG[index].year != year) {index += 1;}
+
+        while (disasterDataG[index].year == year) {
+            disasterIncidents.push(disasterDataG[index]);
+            if (index == disasterDataG.length - 1) {break;}
+            index += 1;
+        }
     }
 
     function drawMap() {
@@ -158,6 +177,10 @@
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
                 });
+        
+        getDisasterIncidents(currentYear);
+
+
     }
 
     function updateText(state) {
@@ -223,8 +246,10 @@
             yearText.text(y);
             currentYear = y;
             drawMap();
+
         }
     }
+
     
     
     //state info
