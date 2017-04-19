@@ -178,12 +178,14 @@
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
                 });
+        insertIcons();
     }
 
         
     function insertIcons() {    
         getDisasterIncidents(currentYear);
-        console.log(disasterIncidents);
+        console.log("update icons");
+        d3.selectAll("image").remove();
         var iconSVG = d3.select("svg");
         var allDisasters = iconSVG.selectAll("image")
             .data(disasterIncidents);
