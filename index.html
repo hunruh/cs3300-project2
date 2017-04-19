@@ -147,6 +147,7 @@
         var states = mapSVG.selectAll("circle")
             .data(gridMap);
 
+        getDisasterIncidents(currentYear);
         states.enter().append("circle")
                 .attr("cx", function(d) {return d.x * 63 + 60;})
                 .attr("cy", function(d) {return d.y * 63 + 60;})
@@ -155,14 +156,29 @@
                 .on("mouseover", function(d) {
                     updateText(d.name);
                     d3.select(this).transition().duration(200)
-                        .style("stroke", "#222222")
+                        .style("stroke", function(d) {
+                            if (disastersByYear[d.name][currentYear] > 4) {
+                                return "#32CD32";
+                            }
+                            else {return "#222222";}
+                    })
                         .style("stroke-width", "3px");
                 })
                 .on("mouseout", function(d) {
-                    updateText(currentState);
+                    updateText(d.name);
                     d3.select(this).transition().duration(200)
-                        .style("stroke", "#eeeeee")
-                        .style("stroke-width", "1px");
+                        .style("stroke", function(d) {
+                            if (disastersByYear[d.name][currentYear] > 4) {
+                                return "#32CD32";
+                            }
+                            else {return "#eeeeee";}
+                        })
+                        .style("stroke-width", function(d) {
+                            if (disastersByYear[d.name][currentYear] > 4) {
+                                return "3px";
+                            }
+                            else {return "1px";}
+                        });
                 })
                 .on("click", function(d) {
                     currentState = d.name;
@@ -175,6 +191,16 @@
                 .transition().duration(500)
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
+                })
+                .style("stroke", function(d) {
+                    if (disastersByYear[d.name][currentYear] > 4) {
+                        return "#32CD32";
+                    }
+                })
+                .style("stroke-width", function(d) {
+                    if (disastersByYear[d.name][currentYear] > 4) {
+                        return "3px";
+                    }
                 });
         
         insertIcons();
@@ -187,7 +213,7 @@
     // Severe Storm/Flooding icon from: http://www.freeiconspng.com/free-images/thunderstorm-icon-15897
     // Other icon from: http://www.freeiconspng.com/free-images/question-icon-26826    
     function insertIcons() {    
-        getDisasterIncidents(currentYear);
+        //getDisasterIncidents(currentYear);
         d3.selectAll("image").remove();
         var iconSVG = d3.select("svg");
         var allDisasters = iconSVG.selectAll("image")
@@ -220,6 +246,7 @@
                     }
                     else {return gridMap[mIndex].x * 63 + 35;}
                 }
+                else {return 0;}
             })
             .attr("y", function(d) {
                 var mIndex = 0;
@@ -237,7 +264,7 @@
                 }
             })
             .attr("width", 20)
-            .attr("height", 20);
+            .attr("height", 20); // GET RID OF THE ICONS IN THE CORNER
 
     }
 
