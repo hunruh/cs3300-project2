@@ -105,8 +105,6 @@
         console.log(maxTempDiff);
         console.log(tempScale(3));
         console.log(tempScale(minTempDiff));
-        console.log(disasterData);
-        console.log(disasterData[0].year);
 
         // Compute the number of disasters per year for each state
 
@@ -178,17 +176,25 @@
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
                 });
+        
         insertIcons();
     }
-
-        
+    
+    // Fire icon from: http://mikearteaga.com/wp-content/uploads/2017/02/passion.png
+    // Winter Storm icon from: https://cdn4.iconfinder.com/data/icons/vectory-weather-1/40/snowflake-512.png
+    // Drought icon from: https://d30y9cdsu7xlg0.cloudfront.net/png/597004-200.png
+    // Tropical Storm icon from: https://d30y9cdsu7xlg0.cloudfront.net/png/22802-200.png
+    // Severe Storm/Flooding icon from: http://www.freeiconspng.com/free-images/thunderstorm-icon-15897
+    // Other icon from: http://www.freeiconspng.com/free-images/question-icon-26826    
     function insertIcons() {    
         getDisasterIncidents(currentYear);
-        console.log("update icons");
         d3.selectAll("image").remove();
         var iconSVG = d3.select("svg");
         var allDisasters = iconSVG.selectAll("image")
             .data(disasterIncidents);
+
+        var statesAlreadyUsedX = [];
+        var statesAlreadyUsedY = [];
 
         allDisasters.enter().append("svg:image")
             .attr("xlink:href", function(d) {
@@ -203,17 +209,35 @@
             .attr("x", function(d) {
                 var mIndex = 0;
                 while (gridMap[mIndex].name != d.state) {mIndex += 1;}
-                return gridMap[mIndex].x * 63 + 60;
+                if ( !(d.state in statesAlreadyUsedX) ) {
+                    statesAlreadyUsedX[d.state] = 1;
+                    return gridMap[mIndex].x * 63 + 35;
+                }
+                else if (statesAlreadyUsedX[d.state] < 4) {
+                    statesAlreadyUsedX[d.state] += 1;
+                    if (statesAlreadyUsedX[d.state] == 3 || statesAlreadyUsedX[d.state] == 4) {
+                        return gridMap[mIndex].x * 63 + 60;
+                    }
+                    else {return gridMap[mIndex].x * 63 + 35;}
+                }
             })
             .attr("y", function(d) {
                 var mIndex = 0;
                 while (gridMap[mIndex].name != d.state) {mIndex += 1;}
-                return gridMap[mIndex].y * 63 + 60;
+                if ( !(d.state in statesAlreadyUsedY) ) {
+                    statesAlreadyUsedY[d.state] = 1;
+                    return gridMap[mIndex].y * 63 + 60;
+                }
+                else if (statesAlreadyUsedY[d.state] < 4) {
+                    statesAlreadyUsedY[d.state] += 1;
+                    if (statesAlreadyUsedY[d.state] == 2 || statesAlreadyUsedY[d.state] == 4) {
+                        return gridMap[mIndex].y * 63 + 40;
+                    }
+                    else {return gridMap[mIndex].y * 63 + 60;}
+                }
             })
             .attr("width", 20)
-            .attr("height", 20)
-            .merge(allDisasters);
-
+            .attr("height", 20);
 
     }
 
