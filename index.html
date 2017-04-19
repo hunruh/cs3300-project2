@@ -124,6 +124,7 @@
         gridMap = gridMapData;
 
         drawMap();
+        insertIcons();
         drawSlider();
     });
 
@@ -177,8 +178,39 @@
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
                 });
+    }
+
         
+    function insertIcons() {    
         getDisasterIncidents(currentYear);
+        console.log(disasterIncidents);
+        var iconSVG = d3.select("svg");
+        var allDisasters = iconSVG.selectAll("image")
+            .data(disasterIncidents);
+
+        allDisasters.enter().append("svg:image")
+            .attr("xlink:href", function(d) {
+                if (d.incident == "Fire") {return "images/fire.png";}
+                else if (d.incident == "Winter Storm") {return "images/winterstorm.png";}
+                else if (d.incident == "Drought") {return "images/drought.png";}
+                else if (d.incident == "Tropical Storm") {return "images/tropicalstorm.png";}
+                else if (d.incident == "Severe Storm/Flooding") {return "images/severestorm.png";}
+                else {return "images/other.png";}
+
+            })
+            .attr("x", function(d) {
+                var mIndex = 0;
+                while (gridMap[mIndex].name != d.state) {mIndex += 1;}
+                return gridMap[mIndex].x * 63 + 60;
+            })
+            .attr("y", function(d) {
+                var mIndex = 0;
+                while (gridMap[mIndex].name != d.state) {mIndex += 1;}
+                return gridMap[mIndex].y * 63 + 60;
+            })
+            .attr("width", 20)
+            .attr("height", 20)
+            .merge(allDisasters);
 
 
     }
