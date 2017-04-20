@@ -62,6 +62,7 @@
 
     var disasterDataG = {};
     var disasterIncidents = [];
+    var stateIncidents = [];
 
     var gridMap;
 
@@ -128,13 +129,8 @@
         drawMap();
         insertIcons();
         drawSlider();
-    });
 
-    d3.selection.prototype.moveToFront = function() {
-        return this.each(function() {
-            this.parentNode.appendChild(this);
-        });
-    }
+    });
 
     function diffFromAvg(climateRow) {
         return climateRow.temp - stateAvg[climateRow.state];
@@ -150,6 +146,18 @@
             if (index == disasterDataG.length - 1) {break;}
             index += 1;
         }
+    }
+
+    function getStateDisasters(year, state) {
+        stateIncidents = [];
+        index = 0
+        while (disasterDataG[index].year != year) {index += 1;}
+        while (disasterDataG[index].year == year) {
+            if (disasterDataG[index].state == state) {stateIncidents.push(disasterDataG[index]);}
+            if (index == disasterDataG.length - 1) {break;}
+            index += 1;
+        }
+
     }
 
     function drawMap() {
@@ -193,17 +201,18 @@
                 .on("click", function(d) {
                     // Contracted value
                     if (this.r.animVal.value == 60) {
-                        d3.select(this).transition().duration(200)
+                        d3.select(this)//.transition().duration(100)
                             .attr("r", 30)
                             .style("stroke", "#32CD32");
                             insertIcons();
                     }
                     // Expanded value
                     else if (disastersByYear[d.name][currentYear] > 4) {
-                        d3.select(this).transition().duration(200)
+                        d3.select(this)//.transition().duration(100)
                             .attr("r", 60)
                             .style("stroke", "#d40505");
                         this.parentElement.appendChild(this);
+                        expandedIcons(this.id);
                     }
                 })
                 .style("stroke", "#eeeeee")
@@ -211,7 +220,7 @@
                     return "#ffffff";
                 })
             .merge(states)
-                .transition().duration(500)
+                //.transition()
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
                 })
@@ -287,8 +296,44 @@
             })
             .attr("class", "no-pointer")
             .attr("width", 20)
-            .attr("height", 20); // GET RID OF THE ICONS IN THE CORNER ***********
+            .attr("height", 20);
+            d3.select("svg").append("rect").attr("height", 20).attr("width", 20).style("fill", "white");
 
+    }
+
+    function expandedIcons(state) {
+        getStateDisasters(currentYear, state);
+        var xPos;
+        var yPos;
+        var index = 0;
+        while (gridMap[index].name != state) {index += 1;}
+        xPos = gridMap[index].x;
+        yPos = gridMap[index].y;
+        var expandedSVG = d3.select("svg").append("svg")
+            .attr("height", 500)
+            .attr("width", 800);
+
+        var allDisasters = expandedSVG.selectAll("image")
+            .data(stateIncidents);
+
+        allDisasters.enter().append("svg:image")
+            .attr("xlink:href", function(d) {
+                if (d.incident == "Fire") {return "images/fire.png";}
+                else if (d.incident == "Winter Storm") {return "images/winterstorm.png";}
+                else if (d.incident == "Drought") {return "images/drought.png";}
+                else if (d.incident == "Tropical Storm") {return "images/tropicalstorm.png";}
+                else if (d.incident == "Severe Storm/Flooding") {return "images/severestorm.png";}
+                else {return "images/other.png";}
+
+            })
+            .attr("x", function(d) {
+                return xPos * 63 + 15;
+            })
+            .attr("y", function(d) {
+                return yPos * 63 + 60;
+            })
+            .attr("height", 20)
+            .attr("width", 20);
     }
 
     function updateText(state) {
