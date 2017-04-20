@@ -133,7 +133,7 @@
         gridMap = gridMapRaw;
         for(i = 0; i < gridMap.length; i++) 
             gridMapDict[gridMap[i].name] = i;
-
+        
         drawMap();
         drawSlider();
         drawButtons();
@@ -144,35 +144,24 @@
         return climateRow.temp - stateAvg[climateRow.state];
     }
 
-    function getDisasterIncidents(year, option) {
+    function getStateDisasters(year, state, option) {
         option = option || "All";
-        disasterIncidents = [];
-        index = 0;
+        stateIncidents = [];
+        index = 0
         while (disasterData[index].year != year) {index += 1;}
 
         if (option == "All") {
             while (disasterData[index].year == year) {
-                disasterIncidents.push(disasterData[index]);
+                if (disasterData[index].state == state) {stateIncidents.push(disasterData[index]);}
                 if (index == disasterData.length - 1) {break;}
                 index += 1;
             }
         } else {
             while (disasterData[index].year == year) {
-                if (disasterData[index].incident == option) {disasterIncidents.push(disasterData[index]);}
+                if ((disasterData[index].state == state) && (disasterData[index].incident == option)) {stateIncidents.push(disasterData[index]);}
                 if (index == disasterData.length - 1) {break;}
                 index += 1;
             }
-        }
-    }
-
-    function getStateDisasters(year, state) {
-        stateIncidents = [];
-        index = 0
-        while (disasterData[index].year != year) {index += 1;}
-        while (disasterData[index].year == year) {
-            if (disasterData[index].state == state) {stateIncidents.push(disasterData[index]);}
-            if (index == disasterData.length - 1) {break;}
-            index += 1;
         }
 
     }
@@ -181,7 +170,6 @@
         var states = svg.selectAll(".state-circles")
             .data(gridMap);
 
-        getDisasterIncidents(currentYear, currentSetting);
         states.enter().append("circle")
                 .attr("class", "state-circles")
                 .attr("cx", function(d) {return d.x * 64 + 60;})
@@ -256,7 +244,7 @@
     }
 
     function insertIcons(state, expanded) {
-        getStateDisasters(currentYear, state);
+        getStateDisasters(currentYear, state, currentSetting);
 
         var stateID = "state" + gridMapDict[state].toString();
         removeIcons(state);
@@ -452,9 +440,9 @@
         .attr("stop-color", "#b2182b");
 
     svg.append("rect")
-	   .attr("width", 350)
-	   .attr("height", 20)
-	   .style("fill", "url(#linear-gradient)")
+       .attr("width", 350)
+       .attr("height", 20)
+       .style("fill", "url(#linear-gradient)")
        .style("stroke", "black")
        .attr("transform", "translate(50,660)");
     var tempLabel = svg.append("text")
@@ -612,7 +600,9 @@
         .attr("transform", "translate(125, 148)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Fire");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Fire");
+            });
             currentSetting = "Fire";
             populateIcons();
         });
@@ -620,7 +610,9 @@
         .attr("transform", "translate(125, 200)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Winter Storm");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Winter Storm");
+            });
             currentSetting = "Winter Storm";
             populateIcons();
         });
@@ -628,7 +620,9 @@
         .attr("transform", "translate(125, 248)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Drought");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Drought");
+            });
             currentSetting = "Drought";
             populateIcons();
         });
@@ -636,7 +630,9 @@
         .attr("transform", "translate(125, 300)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Tropical Storm");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Tropical Storm");
+            });
             currentSetting = "Tropical Storm";
             populateIcons();
         });
@@ -644,7 +640,9 @@
         .attr("transform", "translate(125, 348)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Severe Storm/Flooding");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Severe Storm/Flooding");
+            });
             currentSetting = "Severe Storm/Flooding";
             populateIcons();
         });
@@ -652,7 +650,9 @@
         .attr("transform", "translate(125, 400)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Other");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Other");
+            });
             currentSetting = "Other";
             populateIcons();
         });
@@ -660,7 +660,9 @@
         .attr("transform", "translate(125, 448)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "All");
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "All");
+            });
             currentSetting = "All";
             populateIcons();
         });
