@@ -402,7 +402,12 @@
             .attr("stroke-linecap", "round")
             .call(d3.drag()
             .on("start.interrupt", function() { slider.interrupt(); })
-            .on("start drag", function() { year(Math.floor(x.invert(d3.event.x))); }));
+            .on("start drag", function() {
+                var y = Math.floor(x.invert(d3.event.x));
+                handle.attr("cx", x(y));
+                yearText.text(y);
+            })
+            .on("end", function() { year(Math.floor(x.invert(d3.event.x))); }));
 
 
         var handle = slider.insert("circle", ".track-overlay")
@@ -411,8 +416,6 @@
         .attr("r", 9)
         
         function year(y) {
-            handle.attr("cx", x(y));
-            yearText.text(y);
             currentYear = y;
             drawMap();
         }
