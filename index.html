@@ -58,7 +58,7 @@
     </style>
 </head>
 <body>
-<svg width="800px" height="700px" class="mainSvg"></svg>
+<svg width="820px" height="700px" class="mainSvg"></svg>
 <svg width="450px" height="700px" id="buttons"></svg>
 <script>
     var svg = d3.select(".mainSvg")
@@ -116,7 +116,7 @@
         var minTempDiff = d3.min(climateDataRaw, diffFromAvg);
         tempScale = d3.scaleQuantize()
             .domain([minTempDiff, maxTempDiff])
-            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#fddbc7','#f4a582','#d6604d','#b2182b']);
+            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#fddbc7', '#f4a582','#d6604d','#b2182b']);
 
         // Compute the number of disasters per year for each state
         disasterData = disasterDataRaw;
@@ -200,7 +200,7 @@
 
                     d3.select(this).transition().duration(200)
                         .attr("r", newRadius)
-                        .style("cursor", "pointer")
+                        .style("cursor", "hand")
                         .style("stroke", "#333333")
                         .style("stroke-width", "3px");
                 })
@@ -417,6 +417,56 @@
             drawMap();
         }
     }
+    
+    //color scale
+    var defs = svg.append("defs");
+    var linearGradient = defs.append("linearGradient")
+        .attr("id", "linear-gradient");
+        
+    linearGradient.append("stop") 
+        .attr("offset", "0%")   
+        .attr("stop-color", "#2166ac");
+    linearGradient.append("stop") 
+        .attr("offset", "12.5%")   
+        .attr("stop-color", "#4393c3");
+    linearGradient.append("stop") 
+        .attr("offset", "25%")   
+        .attr("stop-color", "#92c5de");
+    linearGradient.append("stop") 
+        .attr("offset", "37.5%")   
+        .attr("stop-color", "#d1e5f0");
+    linearGradient.append("stop") 
+        .attr("offset", "50%")   
+        .attr("stop-color", "#f7f7f7");
+    linearGradient.append("stop") 
+        .attr("offset", "62.5%")   
+        .attr("stop-color", "#fddbc7");
+    linearGradient.append("stop") 
+        .attr("offset", "75%")   
+        .attr("stop-color", "#f4a582");
+    linearGradient.append("stop") 
+        .attr("offset", "87.5%")   
+        .attr("stop-color", "#d6604d");
+    linearGradient.append("stop") 
+        .attr("offset", "100%")   
+        .attr("stop-color", "#b2182b");
+
+    svg.append("rect")
+	   .attr("width", 350)
+	   .attr("height", 20)
+	   .style("fill", "url(#linear-gradient)")
+       .style("stroke", "black")
+       .attr("transform", "translate(50,660)");
+    var tempLabel = svg.append("text")
+        .text("Temperature Scale")
+        .attr("class", "light")
+        .attr("transform", "translate(47,635)");
+    var coldText = svg.append("text")
+        .text("Below Avg.")
+        .attr("transform", "translate(50,655)");
+    var coldText = svg.append("text")
+        .text("Above Avg.")
+        .attr("transform", "translate(325,655)");
 
     //state info
     var stateText = svg.append("text")
@@ -428,7 +478,68 @@
     var disasterText = svg.append("text")
         .attr("class", "light")
         .attr("transform", "translate(550,625)");
-
+    
+    //disaster key
+    var keyLabel = svg.append("text")
+        .text("Disaster Key")
+        .attr("class", "bold")
+        .attr("transform", "translate(700,330)");
+    
+    var firePic = svg.append("svg:image")
+        .attr("xlink:href","images/fire.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,340)");
+    var fireText = svg.append("text")
+        .text("= Fire")
+        .attr("transform", "translate(695,355)");
+    
+    var winterPic = svg.append("svg:image")
+        .attr("xlink:href","images/winterstorm.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,360)");
+    var winterText = svg.append("text")
+        .text("= Winter Storm")
+        .attr("transform", "translate(695,375)");
+    
+    var droughtPic = svg.append("svg:image")
+        .attr("xlink:href","images/drought.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,380)");
+    var droughtText = svg.append("text")
+        .text("= Drought")
+        .attr("transform", "translate(695,395)");
+    
+    var tropicalPic = svg.append("svg:image")
+        .attr("xlink:href","images/tropicalstorm.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,400)");
+    var tropicalText = svg.append("text")
+        .text("= Tropical Storm")
+        .attr("transform", "translate(695,415)");
+    
+    var floodPic = svg.append("svg:image")
+        .attr("xlink:href","images/severestorm.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,420)");
+    var severeStormText = svg.append("text")
+        .text("= Flooding")
+        .attr("transform", "translate(695,435)");
+    
+    var otherPic = svg.append("svg:image")
+        .attr("xlink:href","images/other.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,440)");
+    var otherText = svg.append("text")
+        .text("= Other")
+        .attr("transform", "translate(695,455)");
+    
+    
     // actual physical buttons
     function drawButtons() {
         var fire = d3.select("#buttons").append("rect")
