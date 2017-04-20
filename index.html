@@ -54,9 +54,11 @@
     </style>
 </head>
 <body>
-<svg width="800px" height="700px"></svg>
+<svg width="800px" height="700px" class="mainSvg"></svg>
 <svg width="450px" height="700px" id="buttons"></svg>
 <script>
+    var svg = d3.select(".mainSvg")
+
     var currentState = "New York";
     var currentYear = 2016;
 
@@ -172,8 +174,7 @@
     }
 
     function drawMap() {
-        var mapSVG = d3.select("svg");
-        var states = mapSVG.selectAll(".state-circles")
+        var states = svg.selectAll(".state-circles")
             .data(gridMap);
 
         getDisasterIncidents(currentYear, currentSetting);
@@ -246,6 +247,12 @@
                     }
                 });
         
+        populateIcons();
+    }
+
+    function populateIcons() {
+        d3.selectAll(".state-icons").remove();
+
         gridMap.forEach(function(d) {
             insertIcons(d.name, false);
         });
@@ -255,9 +262,6 @@
         getStateDisasters(currentYear, state);
 
         d3.selectAll("." + state).remove();
-        var expandedSVG = d3.select("svg").append("svg")
-            .attr("height", 500)
-            .attr("width", 800);
 
         if(!expanded && stateIncidents.length > 4)
             stateIncidents = stateIncidents.slice(0, 4);
@@ -300,7 +304,7 @@
         var disasterNodes = root.descendants();
         disasterNodes.shift();
 
-        var allDisasters = expandedSVG.selectAll("." + state)
+        var allDisasters = svg.selectAll("." + state)
             .data(disasterNodes);
 
         allDisasters.enter().append("svg:image")
@@ -319,7 +323,7 @@
             .attr("y", function(d) {
                 return gridMap[gridMapDict[state]].y * 63 + d.y - 9 + offset;
             })
-            .attr("class", "no-pointer " + state)
+            .attr("class", "no-pointer state-icons " + state)
             .attr("height", 18)
             .attr("width", 18);
     }
@@ -344,7 +348,6 @@
 
 
     //year slider
-    var svg = d3.select("svg");
     function drawSlider() {
         var x = d3.scaleLinear()
             .domain([1956, 2016])
@@ -388,7 +391,6 @@
             yearText.text(y);
             currentYear = y;
             drawMap();
-
         }
     }
 
@@ -477,7 +479,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "Fire");
             currentSetting = "Fire";
-            insertIcons();
+            populateIcons();
         });
     var winterButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(125, 200)")
@@ -485,7 +487,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "Winter Storm");
             currentSetting = "Winter Storm";
-            insertIcons();
+            populateIcons();
         });
     var droughtButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(125, 248)")
@@ -493,7 +495,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "Drought");
             currentSetting = "Drought";
-            insertIcons();
+            populateIcons();
         });
     var tropicalButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(125, 300)")
@@ -501,7 +503,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "Tropical Storm");
             currentSetting = "Tropical Storm";
-            insertIcons();
+            populateIcons();
         });
     var severeButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(125, 348)")
@@ -509,7 +511,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "Severe Storm/Flooding");
             currentSetting = "Severe Storm/Flooding";
-            insertIcons();
+            populateIcons();
         });
     var otherButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(125, 400)")
@@ -517,7 +519,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "Other");
             currentSetting = "Other";
-            insertIcons();
+            populateIcons();
         });
     var resetButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(125, 448)")
@@ -525,7 +527,7 @@
         .on("click", function(d) {
             getDisasterIncidents(currentYear, "All");
             currentSetting = "All";
-            insertIcons();
+            populateIcons();
         });
 </script>
 </body>
