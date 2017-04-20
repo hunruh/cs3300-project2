@@ -142,12 +142,12 @@
     }
 
     function getDisasterIncidents(year, option) {
-        option = option || "all";
+        option = option || "All";
         disasterIncidents = [];
         index = 0;
         while (disasterDataG[index].year != year) {index += 1;}
 
-        if (option == "all") {
+        if (option == "All") {
             while (disasterDataG[index].year == year) {
                 disasterIncidents.push(disasterDataG[index]);
                 if (index == disasterDataG.length - 1) {break;}
@@ -418,65 +418,6 @@
         }
     }
 
-    // buttons controlling icons
-    function drawButtons() {
-        var fire = d3.select("#buttons").append("rect")
-            .attr("class", "button")
-            .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 15)
-            .attr("y", 150);
-
-            fireButtonText.text("Fire");
-
-        var winter = d3.select("#buttons").append("rect")
-            .attr("class", "button")
-            .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 15)
-            .attr("y", 200);
-
-            winterButtonText.text("Winter Storm");
-
-        var drought = d3.select("#buttons").append("rect")
-            .attr("class", "button")
-            .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 15)
-            .attr("y", 250);
-
-            droughtButtonText.text("Drought");
-
-        var tropical = d3.select("#buttons").append("rect")
-            .attr("class", "button")
-            .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 15)
-            .attr("y", 300);
-
-            tropicalButtonText.text("Tropical Storm");
-
-        var severe = d3.select("#buttons").append("rect")
-            .attr("class", "button")
-            .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 15)
-            .attr("y", 350);
-
-            severeButtonText.text("Severe Storm/Flooding");
-
-        var other = d3.select("#buttons").append("rect")
-            .attr("class", "button")
-            .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 15)
-            .attr("y", 400);
-
-            otherButtonText.text("Other");
-         
-    }
-    
-    
     //state info
     var stateText = svg.append("text")
         .attr("class", "bold")
@@ -488,9 +429,76 @@
         .attr("class", "light")
         .attr("transform", "translate(550,625)");
 
-    // buttons
+    // actual physical buttons
+    function drawButtons() {
+        var fire = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 125);
+
+            fireButtonText.text("Fire");
+
+        var winter = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 175);
+
+            winterButtonText.text("Winter Storm");
+
+        var drought = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 225);
+
+            droughtButtonText.text("Drought");
+
+        var tropical = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 275);
+
+            tropicalButtonText.text("Tropical Storm");
+
+        var severe = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 325);
+
+            severeButtonText.text("Severe Storm/Flooding");
+
+        var other = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 375);
+
+            otherButtonText.text("Other");
+
+        var reset = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 425);
+
+            resetButtonText.text("Reset");
+         
+    }
+
+    // text + controlling icons
     var fireButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(105, 175)")
+        .attr("transform", "translate(125, 148)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             console.log("click");
@@ -498,7 +506,7 @@
             insertIcons();
         });
     var winterButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(105, 225)")
+        .attr("transform", "translate(125, 200)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             console.log("click");
@@ -506,7 +514,7 @@
             insertIcons();
         });
     var droughtButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(105, 275)")
+        .attr("transform", "translate(125, 248)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             console.log("click");
@@ -514,7 +522,7 @@
             insertIcons();
         });
     var tropicalButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(105, 325)")
+        .attr("transform", "translate(125, 300)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             console.log("click");
@@ -522,7 +530,7 @@
             insertIcons();
         });
     var severeButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(105, 375)")
+        .attr("transform", "translate(125, 348)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             console.log("click");
@@ -530,11 +538,19 @@
             insertIcons();
         });
     var otherButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(105, 425)")
+        .attr("transform", "translate(125, 400)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             console.log("click");
             getDisasterIncidents(currentYear, "Other");
+            insertIcons();
+        });
+    var resetButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 448)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "All");
             insertIcons();
         });
 </script>
