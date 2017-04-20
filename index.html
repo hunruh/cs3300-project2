@@ -78,7 +78,7 @@
 
     var tempScale;
 
-    var currentSetting;
+    var currentSetting = "All";
 
     // Climate data from NOAA: https://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp
     // Disaster data from: https://www.fema.gov/disasters/grid/year
@@ -133,7 +133,7 @@
         gridMap = gridMapRaw;
         for(i = 0; i < gridMap.length; i++) 
             gridMapDict[gridMap[i].name] = i;
-        
+
         drawMap();
         drawSlider();
         drawButtons();
@@ -181,9 +181,21 @@
 
                     updateText(this.id);
                     if(disastersByYear[this.id][currentYear] > 4) {
-                        this.parentElement.appendChild(this);
-                        newRadius = insertIcons(this.id, true);
-                        console.log(newRadius);
+                        if (currentSetting == "All") {
+                            this.parentElement.appendChild(this);
+                            newRadius = insertIcons(this.id, true);
+                            console.log(newRadius);
+                        } else {
+                            var savedthis = this;
+                            gridMap.forEach(function (b) {
+                                getStateDisasters(currentYear, b.name, currentSetting);
+                                if (stateIncidents.length > 4) {
+                                    savedthis.parentElement.appendChild(savedthis);
+                                    newRadius = insertIcons(savedthis.id, true);
+                                    console.log(newRadius);
+                                }
+                            });
+                        }
                     }
 
                     d3.select(this).transition().duration(200)
