@@ -53,13 +53,24 @@
             fill: none;
             stroke: gray;
             stroke-width: 1px;
+            position: absolute;
         }
+
+        #buttons {
+            margin-right: 5%;
+        }
+
+        .mainSvg {
+            margin-left: 8%;
+        }
+
+
 
     </style>
 </head>
 <body>
-<svg width="820px" height="700px" class="mainSvg"></svg>
-<svg width="450px" height="700px" id="buttons"></svg>
+<svg width="850px" height="650px" class="mainSvg"></svg>
+<svg width="190px" height="650px" id="buttons"></svg>
 <script>
     var svg = d3.select(".mainSvg")
 
@@ -78,7 +89,7 @@
 
     var tempScale;
 
-    var currentSetting;
+    var currentSetting = "All";
 
     // Climate data from NOAA: https://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp
     // Disaster data from: https://www.fema.gov/disasters/grid/year
@@ -144,35 +155,24 @@
         return climateRow.temp - stateAvg[climateRow.state];
     }
 
-    function getDisasterIncidents(year, option) {
+    function getStateDisasters(year, state, option) {
         option = option || "All";
-        disasterIncidents = [];
-        index = 0;
+        stateIncidents = [];
+        index = 0
         while (disasterData[index].year != year) {index += 1;}
 
         if (option == "All") {
             while (disasterData[index].year == year) {
-                disasterIncidents.push(disasterData[index]);
+                if (disasterData[index].state == state) {stateIncidents.push(disasterData[index]);}
                 if (index == disasterData.length - 1) {break;}
                 index += 1;
             }
         } else {
             while (disasterData[index].year == year) {
-                if (disasterData[index].incident == option) {disasterIncidents.push(disasterData[index]);}
+                if ((disasterData[index].state == state) && (disasterData[index].incident == option)) {stateIncidents.push(disasterData[index]);}
                 if (index == disasterData.length - 1) {break;}
                 index += 1;
             }
-        }
-    }
-
-    function getStateDisasters(year, state) {
-        stateIncidents = [];
-        index = 0
-        while (disasterData[index].year != year) {index += 1;}
-        while (disasterData[index].year == year) {
-            if (disasterData[index].state == state) {stateIncidents.push(disasterData[index]);}
-            if (index == disasterData.length - 1) {break;}
-            index += 1;
         }
 
     }
@@ -181,11 +181,10 @@
         var states = svg.selectAll(".state-circles")
             .data(gridMap);
 
-        getDisasterIncidents(currentYear, currentSetting);
         states.enter().append("circle")
                 .attr("class", "state-circles")
                 .attr("cx", function(d) {return d.x * 64 + 60;})
-                .attr("cy", function(d) {return d.y * 64 + 60;})
+                .attr("cy", function(d) {return d.y * 64 + 50;})
                 .attr("id", function(d) {return d.name;})
                 .attr("r", 30)
                 .on("mouseover", function(d) {
@@ -195,7 +194,6 @@
                     if(disastersByYear[this.id][currentYear] > 4) {
                         this.parentElement.appendChild(this);
                         newRadius = insertIcons(this.id, true);
-                        console.log(newRadius);
                     }
 
                     d3.select(this).transition().duration(200)
@@ -256,7 +254,7 @@
     }
 
     function insertIcons(state, expanded) {
-        getStateDisasters(currentYear, state);
+        getStateDisasters(currentYear, state, currentSetting);
 
         var stateID = "state" + gridMapDict[state].toString();
         removeIcons(state);
@@ -264,9 +262,9 @@
         if(!expanded && stateIncidents.length > 4)
             stateIncidents = stateIncidents.slice(0, 4);
 
-        var offset = 30;
+        var offset = 20;
         if(expanded)
-            offset = 0;
+            offset = -10;
 
         var diameter = 60;
         if(expanded)
@@ -328,18 +326,21 @@
 
         d3.selectAll("." + stateID).transition().duration(200)
             .attr("x", function(d) {
-                return gridMap[gridMapDict[state]].x * 64 + d.x - 9 + offset;
+                return gridMap[gridMapDict[state]].x * 64 + d.x + offset;
             })
             .attr("y", function(d) {
                 return gridMap[gridMapDict[state]].y * 64 + d.y - 9 + offset;
             });
 
         // Determine the pack radius
-        return d3.max(disasterNodes, function (d) {
-            var x = Math.abs(d.x);
-            var y = Math.abs(d.y);
-            return Math.sqrt(x * x + y * y);
-        }) - 58;
+        if (disasterNodes.length != 0) {
+            return d3.max(disasterNodes, function (d) {
+                var x = Math.abs(d.x);
+                var y = Math.abs(d.y);
+                return Math.sqrt(x * x + y * y);
+            }) - 58;
+        }
+        else {return 30;}
     }
 
     function removeIcons(state) {
@@ -384,10 +385,10 @@
         var yearText = svg.append("text")
             .text("2016")
             .attr("class", "bold year")
-            .attr("transform", "translate(47,580)");
+            .attr("transform", "translate(47,520)");
         var slider = svg.append("g")
             .attr("class", "slider")
-            .attr("transform", "translate(50,600)");
+            .attr("transform", "translate(50,540)");
     
         slider.append("line")
             .attr("class", "track")
@@ -455,156 +456,155 @@
         .attr("stop-color", "#b2182b");
 
     svg.append("rect")
-	   .attr("width", 350)
-	   .attr("height", 20)
-	   .style("fill", "url(#linear-gradient)")
-       .style("stroke", "black")
-       .attr("transform", "translate(50,660)");
+       .attr("width", 350)
+       .attr("height", 20)
+       .style("fill", "url(#linear-gradient)")
+       .style("stroke", "gray")
+       .attr("transform", "translate(50,595)");
     var tempLabel = svg.append("text")
         .text("Temperature Scale")
         .attr("class", "light")
-        .attr("transform", "translate(47,635)");
+        .attr("transform", "translate(165,575)");
     var coldText = svg.append("text")
         .text("Below Avg.")
-        .attr("transform", "translate(50,655)");
+        .attr("transform", "translate(50,585)");
     var coldText = svg.append("text")
         .text("Above Avg.")
-        .attr("transform", "translate(325,655)");
+        .attr("transform", "translate(325,585)");
 
     //state info
     var stateText = svg.append("text")
         .attr("class", "bold")
-        .attr("transform", "translate(550,575)");
+        .attr("transform", "translate(575,540)");
     var tempText = svg.append("text")
         .attr("class", "light")
-        .attr("transform", "translate(550,600)");
+        .attr("transform", "translate(575,565)");
     var disasterText = svg.append("text")
         .attr("class", "light")
-        .attr("transform", "translate(550,625)");
+        .attr("transform", "translate(575,590)");
     
     //disaster key
-    var keyLabel = svg.append("text")
-        .text("Disaster Key")
-        .attr("class", "bold")
-        .attr("transform", "translate(700,330)");
     
-    var firePic = svg.append("svg:image")
+    var firePic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/fire.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,340)");
-    var fireText = svg.append("text")
-        .text("= Fire")
-        .attr("transform", "translate(695,355)");
+        .attr("transform", "translate(90,133)");
     
-    var winterPic = svg.append("svg:image")
+    var winterPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/winterstorm.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,360)");
-    var winterText = svg.append("text")
-        .text("= Winter Storm")
-        .attr("transform", "translate(695,375)");
+        .attr("transform", "translate(123,185)");
     
-    var droughtPic = svg.append("svg:image")
+    var droughtPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/drought.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,380)");
-    var droughtText = svg.append("text")
-        .text("= Drought")
-        .attr("transform", "translate(695,395)");
+        .attr("transform", "translate(105,234)");
     
-    var tropicalPic = svg.append("svg:image")
+    var tropicalPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/tropicalstorm.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,400)");
-    var tropicalText = svg.append("text")
-        .text("= Tropical Storm")
-        .attr("transform", "translate(695,415)");
+        .attr("transform", "translate(123,285)");
     
-    var floodPic = svg.append("svg:image")
+    var floodPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/severestorm.png")
-        .attr("height", 18)
-        .attr("width", 18)
-        .attr("transform", "translate(675,420)");
-    var severeStormText = svg.append("text")
-        .text("= Flooding")
-        .attr("transform", "translate(695,435)");
+        .attr("height", 23)
+        .attr("width", 23)
+        .attr("transform", "translate(118,333)");
     
-    var otherPic = svg.append("svg:image")
+    var otherPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/other.png")
-        .attr("height", 18)
-        .attr("width", 18)
-        .attr("transform", "translate(675,440)");
-    var otherText = svg.append("text")
-        .text("= Other")
-        .attr("transform", "translate(695,455)");
+        .attr("height", 15)
+        .attr("width", 15)
+        .attr("transform", "translate(98,387)");
     
     
     // actual physical buttons
     function drawButtons() {
         var fire = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "Fire")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 125);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 125)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             fireButtonText.text("Fire");
 
         var winter = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "Winter")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 175);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 175)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             winterButtonText.text("Winter Storm");
 
         var drought = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "Drought")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 225);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 225)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             droughtButtonText.text("Drought");
 
         var tropical = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "Tropical")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 275);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 275)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             tropicalButtonText.text("Tropical Storm");
 
         var severe = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "Severe")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 325);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 325)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
-            severeButtonText.text("Severe Storm/Flooding");
+            severeButtonText.text("Severe Storm");
 
         var other = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "Other")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 375);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 375)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             otherButtonText.text("Other");
 
         var reset = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "All")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 425);
+            .attr("width", 150)
+            .attr("x", 3)
+            .attr("y", 425)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             resetButtonText.text("Reset");
          
@@ -612,60 +612,119 @@
 
     // text + controlling icons
     var fireButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 148)")
+        .attr("transform", "translate(73, 148)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Fire");
+            if (currentSetting == "Winter Storm" || currentSetting == "Tropical Storm" || currentSetting == "Severe Storm/Flooding") {
+                d3.select("#Winter").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Tropical").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Severe").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Fire");
+            });
             currentSetting = "Fire";
             populateIcons();
+            d3.select("#Fire").style("stroke", "#bd0303").style("stroke-width", "3px");
         });
+
     var winterButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 200)")
+        .attr("transform", "translate(73, 200)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Winter Storm");
+            if (currentSetting == "Tropical Storm" || currentSetting == "Severe Storm/Flooding") {
+                d3.select("#Tropical").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Severe").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Winter Storm");
+            });
             currentSetting = "Winter Storm";
             populateIcons();
+            d3.select("#Winter").style("stroke", "#bd0303").style("stroke-width", "3px");
         });
+
     var droughtButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 248)")
+        .attr("transform", "translate(73, 248)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Drought");
+            if (currentSetting == "Winter Storm" || currentSetting == "Tropical Storm" || currentSetting == "Severe Storm/Flooding") {
+                d3.select("#Winter").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Tropical").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Severe").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Drought");
+            });
             currentSetting = "Drought";
             populateIcons();
+            d3.select("#Drought").style("stroke", "#bd0303").style("stroke-width", "3px");
         });
+
     var tropicalButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 300)")
+        .attr("transform", "translate(68, 300)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Tropical Storm");
+            if (currentSetting == "Winter Storm" || currentSetting == "Severe Storm/Flooding") {
+                d3.select("#Winter").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Severe").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Tropical Storm");
+            });
             currentSetting = "Tropical Storm";
             populateIcons();
+            d3.select("#Tropical").style("stroke", "#bd0303").style("stroke-width", "3px");
         });
+
     var severeButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 348)")
+        .attr("transform", "translate(68, 348)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Severe Storm/Flooding");
+            if (currentSetting == "Winter Storm" || currentSetting == "Tropical Storm") {
+                d3.select("#Winter").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Tropical").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Severe Storm/Flooding");
+            });
             currentSetting = "Severe Storm/Flooding";
-            populateIcons();
+            populateIcons()
+            d3.select("#Severe").style("stroke", "#bd0303").style("stroke-width", "3px");;
         });
+
     var otherButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 400)")
+        .attr("transform", "translate(73, 400)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "Other");
+            if (currentSetting == "Winter Storm" || currentSetting == "Tropical Storm" || currentSetting == "Severe Storm/Flooding") {
+                d3.select("#Winter").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Tropical").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Severe").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "Other");
+            });
             currentSetting = "Other";
             populateIcons();
+            d3.select("#Other").style("stroke", "#bd0303").style("stroke-width", "3px");
         });
+
     var resetButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 448)")
+        .attr("transform", "translate(78, 448)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
-            getDisasterIncidents(currentYear, "All");
+            if (currentSetting == "Winter Storm" || currentSetting == "Tropical Storm" || currentSetting == "Severe Storm/Flooding") {
+                d3.select("#Winter").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Tropical").style("stroke", "gray").style("stroke-width","1px");
+                d3.select("#Severe").style("stroke", "gray").style("stroke-width","1px");
+            } else {d3.select("#"+currentSetting).style("stroke", "gray").style("stroke-width","1px");}
+            gridMap.forEach(function (b) {
+                getStateDisasters(currentYear, b.name, "All");
+            });
             currentSetting = "All";
             populateIcons();
+            d3.select("#All").style("stroke", "#bd0303").style("stroke-width", "3px");
         });
 </script>
 </body>
