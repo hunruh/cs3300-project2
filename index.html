@@ -45,13 +45,17 @@
             stroke-width: 1.25px;
         }
 
-        svg {
-            border: solid #ccc 1px;
+        .button {
+            fill: none;
+            stroke: gray;
+            stroke-width: 1px;
         }
+
     </style>
 </head>
 <body>
 <svg width="800px" height="700px"></svg>
+<svg width="450px" height="700px" id="buttons"></svg>
 <script>
     var currentState = "New York";
     var currentYear = 2016;
@@ -129,6 +133,7 @@
         drawMap();
         insertIcons();
         drawSlider();
+        drawButtons();
 
     });
 
@@ -136,15 +141,24 @@
         return climateRow.temp - stateAvg[climateRow.state];
     }
 
-    function getDisasterIncidents(year) {
+    function getDisasterIncidents(year, option) {
+        option = option || "all";
         disasterIncidents = [];
         index = 0;
         while (disasterDataG[index].year != year) {index += 1;}
 
-        while (disasterDataG[index].year == year) {
-            disasterIncidents.push(disasterDataG[index]);
-            if (index == disasterDataG.length - 1) {break;}
-            index += 1;
+        if (option == "all") {
+            while (disasterDataG[index].year == year) {
+                disasterIncidents.push(disasterDataG[index]);
+                if (index == disasterDataG.length - 1) {break;}
+                index += 1;
+            }
+        } else {
+            while (disasterDataG[index].year == year) {
+                if (disasterDataG[index].incident == option) {disasterIncidents.push(disasterDataG[index]);}
+                if (index == disasterDataG.length - 1) {break;}
+                index += 1;
+            }
         }
     }
 
@@ -341,9 +355,9 @@
         
         var tempDiff = tempDiffByYear[state][currentYear];
         if( tempDiff < 0 )
-            tempText.text(d3.format(".2f")(-1 * tempDiff) + " degrees below average");
+            tempText.text(d3.format(".2f")(-1 * tempDiff) + " degrees below state average");
         else
-            tempText.text(d3.format(".2f")(tempDiff) + " degrees above average");
+            tempText.text(d3.format(".2f")(tempDiff) + " degrees above state average");
 
         disasterText.text(function() {
             var numDisasters = disastersByYear[state][currentYear];
@@ -352,10 +366,11 @@
             else
                 return numDisasters + " disasters";
         });
-    } 
+    }
+
 
     //year slider
-    var svg = d3.select("svg")
+    var svg = d3.select("svg");
     function drawSlider() {
         var x = d3.scaleLinear()
             .domain([1956, 2016])
@@ -403,6 +418,63 @@
         }
     }
 
+    // buttons controlling icons
+    function drawButtons() {
+        var fire = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 15)
+            .attr("y", 150);
+
+            fireButtonText.text("Fire");
+
+        var winter = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 15)
+            .attr("y", 200);
+
+            winterButtonText.text("Winter Storm");
+
+        var drought = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 15)
+            .attr("y", 250);
+
+            droughtButtonText.text("Drought");
+
+        var tropical = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 15)
+            .attr("y", 300);
+
+            tropicalButtonText.text("Tropical Storm");
+
+        var severe = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 15)
+            .attr("y", 350);
+
+            severeButtonText.text("Severe Storm/Flooding");
+
+        var other = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 15)
+            .attr("y", 400);
+
+            otherButtonText.text("Other");
+         
+    }
     
     
     //state info
@@ -415,5 +487,55 @@
     var disasterText = svg.append("text")
         .attr("class", "light")
         .attr("transform", "translate(550,625)");
+
+    // buttons
+    var fireButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(105, 175)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "Fire");
+            insertIcons();
+        });
+    var winterButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(105, 225)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "Winter Storm");
+            insertIcons();
+        });
+    var droughtButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(105, 275)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "Drought");
+            insertIcons();
+        });
+    var tropicalButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(105, 325)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "Tropical Storm");
+            insertIcons();
+        });
+    var severeButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(105, 375)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "Severe Storm/Flooding");
+            insertIcons();
+        });
+    var otherButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(105, 425)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            console.log("click");
+            getDisasterIncidents(currentYear, "Other");
+            insertIcons();
+        });
 </script>
 </body>
