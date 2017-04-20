@@ -17,6 +17,10 @@
             font-weight: 300;
         }
 
+        .no-pointer {
+            pointer-events:none;
+        }
+
         .track {
             stroke: #000;
             stroke-opacity: 0.3;
@@ -150,11 +154,12 @@
 
     function drawMap() {
         var mapSVG = d3.select("svg");
-        var states = mapSVG.selectAll("circle")
+        var states = mapSVG.selectAll(".state-circles")
             .data(gridMap);
 
         getDisasterIncidents(currentYear);
         states.enter().append("circle")
+                .attr("class", "state-circles")
                 .attr("cx", function(d) {return d.x * 63 + 60;})
                 .attr("cy", function(d) {return d.y * 63 + 60;})
                 .attr("id", function(d) {return d.name;})
@@ -168,6 +173,7 @@
                             }
                             else {return "#222222";}
                     })
+<<<<<<< HEAD
                         .style("stroke-width", "3px");
                     
                     //change cursor on hover
@@ -177,6 +183,9 @@
                     else if (disastersByYear[d.name][currentYear] > 4) {
                         d3.select(this).style("cursor", "hand");
                     }
+=======
+                    .style("stroke-width", "3px");
+>>>>>>> origin/master
                 })
                 .on("mouseout", function(d) {
                     updateText(d.name);
@@ -194,13 +203,14 @@
                         });
                 })
                 .on("click", function(d) {
-                    currentState = d.name;
+                    // Contracted value
                     if (this.r.animVal.value == 60) {
                         d3.select(this).transition().duration(200)
                             .attr("r", 30)
                             .style("stroke", "#32CD32");
                             insertIcons();
                     }
+                    // Expanded value
                     else if (disastersByYear[d.name][currentYear] > 4) {
                         d3.select(this).transition().duration(200)
                             .attr("r", 60)
@@ -287,6 +297,7 @@
                     else {return gridMap[mIndex].y * 63 + 60;}
                 }
             })
+            .attr("class", "no-pointer")
             .attr("width", 20)
             .attr("height", 20); // GET RID OF THE ICONS IN THE CORNER ***********
 
