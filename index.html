@@ -21,6 +21,10 @@
             pointer-events:none;
         }
 
+        .year {
+            font-size: 36px;
+        }
+
         .track {
             stroke: #000;
             stroke-opacity: 0.3;
@@ -112,7 +116,7 @@
         var minTempDiff = d3.min(climateDataRaw, diffFromAvg);
         tempScale = d3.scaleQuantize()
             .domain([minTempDiff, maxTempDiff])
-            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#f4a582','#fddbc7','#d6604d','#b2182b']);
+            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#fddbc7','#f4a582','#d6604d','#b2182b']);
 
         // Compute the number of disasters per year for each state
         disasterData = disasterDataRaw;
@@ -180,86 +184,62 @@
         getDisasterIncidents(currentYear, currentSetting);
         states.enter().append("circle")
                 .attr("class", "state-circles")
-                .attr("cx", function(d) {return d.x * 63 + 60;})
-                .attr("cy", function(d) {return d.y * 63 + 60;})
+                .attr("cx", function(d) {return d.x * 64 + 60;})
+                .attr("cy", function(d) {return d.y * 64 + 60;})
                 .attr("id", function(d) {return d.name;})
                 .attr("r", 30)
                 .on("mouseover", function(d) {
-                    updateText(d.name);
-                    if(disastersByYear[d.name][currentYear] > 4) {
+                    var newRadius = 30;
+
+                    updateText(this.id);
+                    if(disastersByYear[this.id][currentYear] > 4) {
                         this.parentElement.appendChild(this);
-                        insertIcons(this.id, true);
+                        newRadius = insertIcons(this.id, true);
+                        console.log(newRadius);
                     }
 
                     d3.select(this).transition().duration(200)
-                        .attr("r", function() {
-                            if(disastersByYear[d.name][currentYear] > 4)
-                                return 60;
-                            else
-                                return 30;
-                        })
-                        .style("stroke", function() {
-                            if (disastersByYear[d.name][currentYear] > 4) {
-                                return "#32CD32";
-                            }
-                            else {return "#666666";}
-                        })
+                        .attr("r", newRadius)
+                        .style("cursor", "pointer")
+                        .style("stroke", "#333333")
                         .style("stroke-width", "3px");
                 })
-                .on("mouseout", function(d) {
-                    updateText(d.name);
-                    if(disastersByYear[d.name][currentYear] > 4)
+                .on("mouseout", function() {
+                    updateText(this.id);
+                    if(disastersByYear[this.id][currentYear] > 4)
                         insertIcons(this.id, false);
 
                     d3.select(this).transition().duration(200)
                         .attr("r", 30)
-                        .style("stroke", function(d) {
-                            if (this.r.animVal.value == 60) {return "#d40505";} 
-                            else if (disastersByYear[d.name][currentYear] > 4) {return "#32CD32";}
-                            else {return "#eeeeee";}
+                        .style("stroke", function() {
+                            if (disastersByYear[this.id][currentYear] > 4)
+                                return "#d40505";
+                            else 
+                                return "#dddddd";
                         })
-                        .style("stroke-width", function(d) {
-                            if (disastersByYear[d.name][currentYear] > 4) {
+                        .style("stroke-width", function() {
+                            if (disastersByYear[this.id][currentYear] > 4) {
                                 return "3px";
                             }
                             else {return "1px";}
                         });
                 })
-                .on("click", function(d) {
-
-                    // console.log(this.r);
-                    // // Contracted value
-                    // if (this.r.animVal.value == 60) {
-                    //     d3.select(this)//.transition().duration(100)
-                    //         .attr("r", 30)
-                    //         .style("stroke", "#32CD32");
-                    //         insertIcons(this.id, false);
-                    // }
-                    // // Expanded value
-                    // else if (disastersByYear[d.name][currentYear] > 4) {
-                    //     d3.select(this)//.transition().duration(100)
-                    //         .attr("r", 60)
-                    //         .style("stroke", "#d40505");
-                    //     this.parentElement.appendChild(this);
-                    //     insertIcons(this.id, true);
-                    // }
-                })
-                .style("stroke", "#eeeeee")
                 .style("fill", function(d) {
                     return "#ffffff";
                 })
             .merge(states)
-                //.transition()
-                .style("fill", function(d) {
-                    return tempScale(tempDiffByYear[d.name][currentYear]);
+                .transition(200)
+                .style("fill", function() {
+                    return tempScale(tempDiffByYear[this.id][currentYear]);
                 })
-                .style("stroke", function(d) {
-                    if (disastersByYear[d.name][currentYear] > 4) {
-                        return "#32CD32";
-                    }
+                .style("stroke", function() {
+                    if (disastersByYear[this.id][currentYear] > 4)
+                        return "#d40505";
+                    else
+                        return "#dddddd";
                 })
                 .style("stroke-width", function(d) {
-                    if (disastersByYear[d.name][currentYear] > 4) {
+                    if (disastersByYear[this.id][currentYear] > 4) {
                         return "3px";
                     }
                 });
@@ -336,22 +316,30 @@
 
             })
             .attr("x", function(d) {
-                return gridMap[gridMapDict[state]].x * 63 + 50;
+                return gridMap[gridMapDict[state]].x * 64 + 50;
             })
             .attr("y", function(d) {
-                return gridMap[gridMapDict[state]].y * 63 + 50;
+                return gridMap[gridMapDict[state]].y * 64 + 50;
             })
             .attr("class", "no-pointer state-icons " + stateID)
+            .style("opacity", 0.7)
             .attr("height", 18)
             .attr("width", 18);
 
         d3.selectAll("." + stateID).transition().duration(200)
             .attr("x", function(d) {
-                return gridMap[gridMapDict[state]].x * 63 + d.x - 9 + offset;
+                return gridMap[gridMapDict[state]].x * 64 + d.x - 9 + offset;
             })
             .attr("y", function(d) {
-                return gridMap[gridMapDict[state]].y * 63 + d.y - 9 + offset;
+                return gridMap[gridMapDict[state]].y * 64 + d.y - 9 + offset;
             });
+
+        // Determine the pack radius
+        return d3.max(disasterNodes, function (d) {
+            var x = Math.abs(d.x);
+            var y = Math.abs(d.y);
+            return Math.sqrt(x * x + y * y);
+        }) - 58;
     }
 
     function removeIcons(state) {
@@ -359,10 +347,10 @@
 
         d3.selectAll("." + stateID).transition().duration(200)
             .attr("x", function(d) {
-                return gridMap[gridMapDict[state]].x * 63 + 50;
+                return gridMap[gridMapDict[state]].x * 64 + 50;
             })
             .attr("y", function(d) {
-                return gridMap[gridMapDict[state]].y * 63 + 50;
+                return gridMap[gridMapDict[state]].y * 64 + 50;
             });
 
         d3.selectAll("." + stateID).remove();
@@ -393,14 +381,10 @@
             .domain([1956, 2016])
             .range([0, 350])
             .clamp(true);
-        var yearLabel = svg.append("text")
-            .text("Year:")
-            .attr("class", "light")
-            .attr("transform", "translate(47,580)");
         var yearText = svg.append("text")
             .text("2016")
-            .attr("class", "bold")
-            .attr("transform", "translate(87,580)");
+            .attr("class", "bold year")
+            .attr("transform", "translate(47,580)");
         var slider = svg.append("g")
             .attr("class", "slider")
             .attr("transform", "translate(50,600)");
