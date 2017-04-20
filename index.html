@@ -523,6 +523,7 @@
     function drawButtons() {
         var fire = d3.select("#buttons").append("rect")
             .attr("class", "button")
+            .attr("id", "fire")
             .attr("height", 40)
             .attr("width", 150)
             .attr("x", 0)
@@ -610,6 +611,7 @@
             });
             currentSetting = "Fire";
             populateIcons();
+            d3.select("#fire").style("fill", "#C0C0C0");
         });
     var winterButtonText = d3.select("#buttons").append("text")
         .attr("transform", "translate(70, 200)")
