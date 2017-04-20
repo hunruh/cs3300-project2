@@ -154,11 +154,12 @@
 
     function drawMap() {
         var mapSVG = d3.select("svg");
-        var states = mapSVG.selectAll("circle")
+        var states = mapSVG.selectAll(".state-circles")
             .data(gridMap);
 
         getDisasterIncidents(currentYear);
         states.enter().append("circle")
+                .attr("class", "state-circles")
                 .attr("cx", function(d) {return d.x * 63 + 60;})
                 .attr("cy", function(d) {return d.y * 63 + 60;})
                 .attr("id", function(d) {return d.name;})
