@@ -17,6 +17,10 @@
             font-weight: 300;
         }
 
+        .no-pointer {
+            pointer-events:none;
+        }
+
         .track {
             stroke: #000;
             stroke-opacity: 0.3;
@@ -168,7 +172,7 @@
                             }
                             else {return "#222222";}
                     })
-                        .style("stroke-width", "3px");
+                    .style("stroke-width", "3px");
                 })
                 .on("mouseout", function(d) {
                     updateText(d.name);
@@ -186,13 +190,14 @@
                         });
                 })
                 .on("click", function(d) {
-                    currentState = d.name;
+                    // Contracted value
                     if (this.r.animVal.value == 60) {
                         d3.select(this).transition().duration(200)
                             .attr("r", 30)
                             .style("stroke", "#32CD32");
                             insertIcons();
                     }
+                    // Expanded value
                     else if (disastersByYear[d.name][currentYear] > 4) {
                         d3.select(this).transition().duration(200)
                             .attr("r", 60)
@@ -279,6 +284,7 @@
                     else {return gridMap[mIndex].y * 63 + 60;}
                 }
             })
+            .attr("class", "no-pointer")
             .attr("width", 20)
             .attr("height", 20); // GET RID OF THE ICONS IN THE CORNER ***********
 
