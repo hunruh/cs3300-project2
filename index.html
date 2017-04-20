@@ -45,27 +45,36 @@
             stroke-width: 1.25px;
         }
 
-        svg {
-            border: solid #ccc 1px;
+        .button {
+            fill: none;
+            stroke: gray;
+            stroke-width: 1px;
         }
+
     </style>
 </head>
 <body>
-<svg width="800px" height="700px"></svg>
+<svg width="800px" height="700px" class="mainSvg"></svg>
+<svg width="450px" height="700px" id="buttons"></svg>
 <script>
+    var svg = d3.select(".mainSvg")
+
     var currentState = "New York";
     var currentYear = 2016;
 
     var stateAvg = {};
     var tempDiffByYear = {};
     var disastersByYear = {};
-
-    var disasterDataG = {};
+    var disasterData = {};
     var disasterIncidents = [];
+    var stateIncidents = [];
 
     var gridMap;
+    var gridMapDict = {};
 
     var tempScale;
+
+    var currentSetting;
 
     // Climate data from NOAA: https://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp
     // Disaster data from: https://www.fema.gov/disasters/grid/year
@@ -79,9 +88,9 @@
         return { year: Number(row["Date"]), state: row["State"], incident: row["Incident Description"]};
     })
     .defer(d3.csv, "data/gridmap-layout-usa.csv")
-    .await( function (error, climateData, disasterData, gridMapData) {
+    .await( function (error, climateDataRaw, disasterDataRaw, gridMapRaw) {
         // Compute average climate data - visualization will be based on difference from average
-        climateData.forEach(function(d) {
+        climateDataRaw.forEach(function(d) {
             if( d.state in stateAvg )
                 stateAvg[d.state] += d.temp;
             else
@@ -91,7 +100,7 @@
             stateAvg[state] /= 61;
 
         // Ideally we wouldn't have to iterate again but we need the average to compute the diff from average
-        climateData.forEach(function(d) {
+        climateDataRaw.forEach(function(d) {
             if( !(d.state in tempDiffByYear) )
                 tempDiffByYear[d.state] = {}
             tempDiffByYear[d.state][d.year] = diffFromAvg(d);
@@ -99,21 +108,15 @@
 
         // Determine the color scale (based on temperature)
         // Color scheme derived from color brewer
-        var maxTempDiff = d3.max(climateData, diffFromAvg);
-        var minTempDiff = d3.min(climateData, diffFromAvg);
-
+        var maxTempDiff = d3.max(climateDataRaw, diffFromAvg);
+        var minTempDiff = d3.min(climateDataRaw, diffFromAvg);
         tempScale = d3.scaleQuantize()
             .domain([minTempDiff, maxTempDiff])
             .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#fddbc7', '#f4a582','#d6604d','#b2182b']);
 
-        console.log(maxTempDiff);
-        console.log(tempScale(3));
-        console.log(tempScale(minTempDiff));
-
         // Compute the number of disasters per year for each state
-
-        disasterDataG = disasterData;
-        disasterData.forEach(function(d) {
+        disasterData = disasterDataRaw;
+        disasterDataRaw.forEach(function(d) {
             if( !(d.state in disastersByYear) ) {
                 disastersByYear[d.state] = {}
                 for (i = 1956; i <= 2016; i += 1)
@@ -123,41 +126,58 @@
         });
 
         // Store the map
-        gridMap = gridMapData;
+        gridMap = gridMapRaw;
+        for(i = 0; i < gridMap.length; i++) 
+            gridMapDict[gridMap[i].name] = i;
 
         drawMap();
-        insertIcons();
         drawSlider();
-    });
+        drawButtons();
 
-    d3.selection.prototype.moveToFront = function() {
-        return this.each(function() {
-            this.parentNode.appendChild(this);
-        });
-    }
+    });
 
     function diffFromAvg(climateRow) {
         return climateRow.temp - stateAvg[climateRow.state];
     }
 
-    function getDisasterIncidents(year) {
+    function getDisasterIncidents(year, option) {
+        option = option || "All";
         disasterIncidents = [];
         index = 0;
-        while (disasterDataG[index].year != year) {index += 1;}
+        while (disasterData[index].year != year) {index += 1;}
 
-        while (disasterDataG[index].year == year) {
-            disasterIncidents.push(disasterDataG[index]);
-            if (index == disasterDataG.length - 1) {break;}
-            index += 1;
+        if (option == "All") {
+            while (disasterData[index].year == year) {
+                disasterIncidents.push(disasterData[index]);
+                if (index == disasterData.length - 1) {break;}
+                index += 1;
+            }
+        } else {
+            while (disasterData[index].year == year) {
+                if (disasterData[index].incident == option) {disasterIncidents.push(disasterData[index]);}
+                if (index == disasterData.length - 1) {break;}
+                index += 1;
+            }
         }
     }
 
+    function getStateDisasters(year, state) {
+        stateIncidents = [];
+        index = 0
+        while (disasterData[index].year != year) {index += 1;}
+        while (disasterData[index].year == year) {
+            if (disasterData[index].state == state) {stateIncidents.push(disasterData[index]);}
+            if (index == disasterData.length - 1) {break;}
+            index += 1;
+        }
+
+    }
+
     function drawMap() {
-        var mapSVG = d3.select("svg");
-        var states = mapSVG.selectAll(".state-circles")
+        var states = svg.selectAll(".state-circles")
             .data(gridMap);
 
-        getDisasterIncidents(currentYear);
+        getDisasterIncidents(currentYear, currentSetting);
         states.enter().append("circle")
                 .attr("class", "state-circles")
                 .attr("cx", function(d) {return d.x * 63 + 60;})
@@ -205,17 +225,18 @@
                 .on("click", function(d) {
                     // Contracted value
                     if (this.r.animVal.value == 60) {
-                        d3.select(this).transition().duration(200)
+                        d3.select(this)//.transition().duration(100)
                             .attr("r", 30)
                             .style("stroke", "#32CD32");
-                            insertIcons();
+                            insertIcons(this.id, false);
                     }
                     // Expanded value
                     else if (disastersByYear[d.name][currentYear] > 4) {
-                        d3.select(this).transition().duration(200)
+                        d3.select(this)//.transition().duration(100)
                             .attr("r", 60)
                             .style("stroke", "#d40505");
                         this.parentElement.appendChild(this);
+                        insertIcons(this.id, true);
                     }
                 })
                 .style("stroke", "#eeeeee")
@@ -223,7 +244,7 @@
                     return "#ffffff";
                 })
             .merge(states)
-                .transition().duration(500)
+                //.transition()
                 .style("fill", function(d) {
                     return tempScale(tempDiffByYear[d.name][currentYear]);
                 })
@@ -238,69 +259,85 @@
                     }
                 });
         
-        insertIcons();
+        populateIcons();
     }
-    
-    // Fire icon from: http://mikearteaga.com/wp-content/uploads/2017/02/passion.png
-    // Winter Storm icon from: https://cdn4.iconfinder.com/data/icons/vectory-weather-1/40/snowflake-512.png
-    // Drought icon from: https://d30y9cdsu7xlg0.cloudfront.net/png/597004-200.png
-    // Tropical Storm icon from: https://d30y9cdsu7xlg0.cloudfront.net/png/22802-200.png
-    // Severe Storm/Flooding icon from: http://www.freeiconspng.com/free-images/thunderstorm-icon-15897
-    // Other icon from: http://www.freeiconspng.com/free-images/question-icon-26826    
-    function insertIcons() {    
-        d3.selectAll("image").remove();
-        var iconSVG = d3.select("svg");
-        var allDisasters = iconSVG.selectAll("image")
-            .data(disasterIncidents);
 
-        var statesAlreadyUsedX = [];
-        var statesAlreadyUsedY = [];
+    function populateIcons() {
+        d3.selectAll(".state-icons").remove();
+
+        gridMap.forEach(function(d) {
+            insertIcons(d.name, false);
+        });
+    }
+
+    function insertIcons(state, expanded) {
+        getStateDisasters(currentYear, state);
+
+        d3.selectAll("." + state).remove();
+
+        if(!expanded && stateIncidents.length > 4)
+            stateIncidents = stateIncidents.slice(0, 4);
+
+        var offset = 30;
+        if(expanded)
+            offset = 0;
+
+        var diameter = 60;
+        if(expanded)
+            diameter = 120;
+
+        // Arrange disasters in the circle by packing
+        // Initialize parameters for packing
+        var pack = d3.pack()
+        .size([diameter, diameter])
+        .radius(function() { return 10; })
+        .padding(3);
+
+        // Pack is heirarchy and thus needs a root node, so we append one
+        stateIncidents.push({incident: "root"});
+        var stratify = d3.stratify()
+        .id(function(d) {
+            return d.incident;
+        })
+        .parentId(function(d) { 
+            if (d.incident == "root") {
+                return null;
+            }
+            else
+                return "root";
+        });
+
+        // Convert data to a heirarchical format
+        var root = stratify(stateIncidents);
+        pack(root);
+
+        // Now that the data is formatted correctly, get rid of the root to make
+        // the circle pack look nice
+        var disasterNodes = root.descendants();
+        disasterNodes.shift();
+
+        var allDisasters = svg.selectAll("." + state)
+            .data(disasterNodes);
 
         allDisasters.enter().append("svg:image")
             .attr("xlink:href", function(d) {
-                if (d.incident == "Fire") {return "images/fire.png";}
-                else if (d.incident == "Winter Storm") {return "images/winterstorm.png";}
-                else if (d.incident == "Drought") {return "images/drought.png";}
-                else if (d.incident == "Tropical Storm") {return "images/tropicalstorm.png";}
-                else if (d.incident == "Severe Storm/Flooding") {return "images/severestorm.png";}
+                if (d.id == "Fire") {return "images/fire.png";}
+                else if (d.id == "Winter Storm") {return "images/winterstorm.png";}
+                else if (d.id == "Drought") {return "images/drought.png";}
+                else if (d.id == "Tropical Storm") {return "images/tropicalstorm.png";}
+                else if (d.id == "Severe Storm/Flooding") {return "images/severestorm.png";}
                 else {return "images/other.png";}
 
             })
             .attr("x", function(d) {
-                var mIndex = 0;
-                while (gridMap[mIndex].name != d.state) {mIndex += 1;}
-                if ( !(d.state in statesAlreadyUsedX) ) {
-                    statesAlreadyUsedX[d.state] = 1;
-                    return gridMap[mIndex].x * 63 + 35;
-                }
-                else if (statesAlreadyUsedX[d.state] < 4) {
-                    statesAlreadyUsedX[d.state] += 1;
-                    if (statesAlreadyUsedX[d.state] == 3 || statesAlreadyUsedX[d.state] == 4) {
-                        return gridMap[mIndex].x * 63 + 60;
-                    }
-                    else {return gridMap[mIndex].x * 63 + 35;}
-                }
-                else {return 0;}
+                return gridMap[gridMapDict[state]].x * 63 + d.x - 9 + offset;
             })
             .attr("y", function(d) {
-                var mIndex = 0;
-                while (gridMap[mIndex].name != d.state) {mIndex += 1;}
-                if ( !(d.state in statesAlreadyUsedY) ) {
-                    statesAlreadyUsedY[d.state] = 1;
-                    return gridMap[mIndex].y * 63 + 60;
-                }
-                else if (statesAlreadyUsedY[d.state] < 4) {
-                    statesAlreadyUsedY[d.state] += 1;
-                    if (statesAlreadyUsedY[d.state] == 2 || statesAlreadyUsedY[d.state] == 4) {
-                        return gridMap[mIndex].y * 63 + 40;
-                    }
-                    else {return gridMap[mIndex].y * 63 + 60;}
-                }
+                return gridMap[gridMapDict[state]].y * 63 + d.y - 9 + offset;
             })
-            .attr("class", "no-pointer")
-            .attr("width", 20)
-            .attr("height", 20); // GET RID OF THE ICONS IN THE CORNER ***********
-
+            .attr("class", "no-pointer state-icons " + state)
+            .attr("height", 18)
+            .attr("width", 18);
     }
 
     function updateText(state) {
@@ -308,9 +345,9 @@
         
         var tempDiff = tempDiffByYear[state][currentYear];
         if( tempDiff < 0 )
-            tempText.text(d3.format(".2f")(-1 * tempDiff) + " degrees below average");
+            tempText.text(d3.format(".2f")(-1 * tempDiff) + " degrees below state average");
         else
-            tempText.text(d3.format(".2f")(tempDiff) + " degrees above average");
+            tempText.text(d3.format(".2f")(tempDiff) + " degrees above state average");
 
         disasterText.text(function() {
             var numDisasters = disastersByYear[state][currentYear];
@@ -319,10 +356,10 @@
             else
                 return numDisasters + " disasters";
         });
-    } 
+    }
+
 
     //year slider
-    var svg = d3.select("svg")
     function drawSlider() {
         var x = d3.scaleLinear()
             .domain([1956, 2016])
@@ -366,7 +403,6 @@
             yearText.text(y);
             currentYear = y;
             drawMap();
-
         }
     }
     
@@ -420,8 +456,6 @@
         .text("Above Avg.")
         .attr("transform", "translate(325,655)");
 
-    
-    
     //state info
     var stateText = svg.append("text")
         .attr("class", "bold")
@@ -432,5 +466,130 @@
     var disasterText = svg.append("text")
         .attr("class", "light")
         .attr("transform", "translate(550,625)");
+
+    // actual physical buttons
+    function drawButtons() {
+        var fire = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 125);
+
+            fireButtonText.text("Fire");
+
+        var winter = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 175);
+
+            winterButtonText.text("Winter Storm");
+
+        var drought = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 225);
+
+            droughtButtonText.text("Drought");
+
+        var tropical = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 275);
+
+            tropicalButtonText.text("Tropical Storm");
+
+        var severe = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 325);
+
+            severeButtonText.text("Severe Storm/Flooding");
+
+        var other = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 375);
+
+            otherButtonText.text("Other");
+
+        var reset = d3.select("#buttons").append("rect")
+            .attr("class", "button")
+            .attr("height", 40)
+            .attr("width", 180)
+            .attr("x", 35)
+            .attr("y", 425);
+
+            resetButtonText.text("Reset");
+         
+    }
+
+    // text + controlling icons
+    var fireButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 148)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "Fire");
+            currentSetting = "Fire";
+            populateIcons();
+        });
+    var winterButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 200)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "Winter Storm");
+            currentSetting = "Winter Storm";
+            populateIcons();
+        });
+    var droughtButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 248)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "Drought");
+            currentSetting = "Drought";
+            populateIcons();
+        });
+    var tropicalButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 300)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "Tropical Storm");
+            currentSetting = "Tropical Storm";
+            populateIcons();
+        });
+    var severeButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 348)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "Severe Storm/Flooding");
+            currentSetting = "Severe Storm/Flooding";
+            populateIcons();
+        });
+    var otherButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 400)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "Other");
+            currentSetting = "Other";
+            populateIcons();
+        });
+    var resetButtonText = d3.select("#buttons").append("text")
+        .attr("transform", "translate(125, 448)")
+        .attr("text-anchor", "middle")
+        .on("click", function(d) {
+            getDisasterIncidents(currentYear, "All");
+            currentSetting = "All";
+            populateIcons();
+        });
 </script>
 </body>
