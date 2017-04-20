@@ -100,7 +100,7 @@
 
         tempScale = d3.scaleQuantize()
             .domain([minTempDiff, maxTempDiff])
-            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#f4a582','#fddbc7','#d6604d','#b2182b']);
+            .range(['#2166ac','#4393c3','#92c5de','#d1e5f0','#f7f7f7','#fddbc7', '#f4a582','#d6604d','#b2182b']);
 
         console.log(maxTempDiff);
         console.log(tempScale(3));
@@ -169,6 +169,14 @@
                             else {return "#222222";}
                     })
                         .style("stroke-width", "3px");
+                    
+                    //change cursor on hover
+                    if (this.r.animVal.value == 60) {
+                        d3.select(this).style("cursor", "hand");
+                    }
+                    else if (disastersByYear[d.name][currentYear] > 4) {
+                        d3.select(this).style("cursor", "hand");
+                    }
                 })
                 .on("mouseout", function(d) {
                     updateText(d.name);
@@ -350,6 +358,56 @@
 
         }
     }
+    
+    //color scale
+    var defs = svg.append("defs");
+    var linearGradient = defs.append("linearGradient")
+        .attr("id", "linear-gradient");
+        
+    linearGradient.append("stop") 
+        .attr("offset", "0%")   
+        .attr("stop-color", "#2166ac");
+    linearGradient.append("stop") 
+        .attr("offset", "12.5%")   
+        .attr("stop-color", "#4393c3");
+    linearGradient.append("stop") 
+        .attr("offset", "25%")   
+        .attr("stop-color", "#92c5de");
+    linearGradient.append("stop") 
+        .attr("offset", "37.5%")   
+        .attr("stop-color", "#d1e5f0");
+    linearGradient.append("stop") 
+        .attr("offset", "50%")   
+        .attr("stop-color", "#f7f7f7");
+    linearGradient.append("stop") 
+        .attr("offset", "62.5%")   
+        .attr("stop-color", "#fddbc7");
+    linearGradient.append("stop") 
+        .attr("offset", "75%")   
+        .attr("stop-color", "#f4a582");
+    linearGradient.append("stop") 
+        .attr("offset", "87.5%")   
+        .attr("stop-color", "#d6604d");
+    linearGradient.append("stop") 
+        .attr("offset", "100%")   
+        .attr("stop-color", "#b2182b");
+
+    svg.append("rect")
+	   .attr("width", 350)
+	   .attr("height", 20)
+	   .style("fill", "url(#linear-gradient)")
+       .style("stroke", "black")
+       .attr("transform", "translate(50,660)");
+    var tempLabel = svg.append("text")
+        .text("Temperature Scale")
+        .attr("class", "light")
+        .attr("transform", "translate(47,635)");
+    var coldText = svg.append("text")
+        .text("Below Avg.")
+        .attr("transform", "translate(50,655)");
+    var coldText = svg.append("text")
+        .text("Above Avg.")
+        .attr("transform", "translate(325,655)");
 
     
     
