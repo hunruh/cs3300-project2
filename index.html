@@ -54,7 +54,7 @@
     </style>
 </head>
 <body>
-<svg width="800px" height="700px" class="mainSvg"></svg>
+<svg width="820px" height="700px" class="mainSvg"></svg>
 <svg width="450px" height="700px" id="buttons"></svg>
 <script>
     var svg = d3.select(".mainSvg")
@@ -193,8 +193,6 @@
                             }
                             else {return "#222222";}
                     })
-<<<<<<< HEAD
-                        .style("stroke-width", "3px");
                     
                     //change cursor on hover
                     if (this.r.animVal.value == 60) {
@@ -203,9 +201,7 @@
                     else if (disastersByYear[d.name][currentYear] > 4) {
                         d3.select(this).style("cursor", "hand");
                     }
-=======
-                    .style("stroke-width", "3px");
->>>>>>> origin/master
+
                 })
                 .on("mouseout", function(d) {
                     updateText(d.name);
@@ -466,7 +462,68 @@
     var disasterText = svg.append("text")
         .attr("class", "light")
         .attr("transform", "translate(550,625)");
-
+    
+    //disaster key
+    var keyLabel = svg.append("text")
+        .text("Disaster Key")
+        .attr("class", "bold")
+        .attr("transform", "translate(700,330)");
+    
+    var firePic = svg.append("svg:image")
+        .attr("xlink:href","images/fire.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,340)");
+    var fireText = svg.append("text")
+        .text("= Fire")
+        .attr("transform", "translate(695,355)");
+    
+    var winterPic = svg.append("svg:image")
+        .attr("xlink:href","images/winterstorm.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,360)");
+    var winterText = svg.append("text")
+        .text("= Winter Storm")
+        .attr("transform", "translate(695,375)");
+    
+    var droughtPic = svg.append("svg:image")
+        .attr("xlink:href","images/drought.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,380)");
+    var droughtText = svg.append("text")
+        .text("= Drought")
+        .attr("transform", "translate(695,395)");
+    
+    var tropicalPic = svg.append("svg:image")
+        .attr("xlink:href","images/tropicalstorm.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,400)");
+    var tropicalText = svg.append("text")
+        .text("= Tropical Storm")
+        .attr("transform", "translate(695,415)");
+    
+    var floodPic = svg.append("svg:image")
+        .attr("xlink:href","images/severestorm.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,420)");
+    var severeStormText = svg.append("text")
+        .text("= Flooding")
+        .attr("transform", "translate(695,435)");
+    
+    var otherPic = svg.append("svg:image")
+        .attr("xlink:href","images/other.png")
+        .attr("height", 18)
+        .attr("width", 18)
+        .attr("transform", "translate(675,440)");
+    var otherText = svg.append("text")
+        .text("= Other")
+        .attr("transform", "translate(695,455)");
+    
+    
     // actual physical buttons
     function drawButtons() {
         var fire = d3.select("#buttons").append("rect")
