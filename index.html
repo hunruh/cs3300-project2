@@ -55,11 +55,13 @@
             stroke-width: 1px;
         }
 
+
+
     </style>
 </head>
 <body>
+<svg width="300px" height="700px" id="buttons"></svg>
 <svg width="820px" height="700px" class="mainSvg"></svg>
-<svg width="450px" height="700px" id="buttons"></svg>
 <script>
     var svg = d3.select(".mainSvg")
 
@@ -181,21 +183,10 @@
 
                     updateText(this.id);
                     if(disastersByYear[this.id][currentYear] > 4) {
-                        if (currentSetting == "All") {
-                            this.parentElement.appendChild(this);
-                            newRadius = insertIcons(this.id, true);
-                            console.log(newRadius);
-                        } else {
-                            var savedthis = this;
-                            gridMap.forEach(function (b) {
-                                getStateDisasters(currentYear, b.name, currentSetting);
-                                if (stateIncidents.length > 4) {
-                                    savedthis.parentElement.appendChild(savedthis);
-                                    newRadius = insertIcons(savedthis.id, true);
-                                    console.log(newRadius);
-                                }
-                            });
-                        }
+                        console.log("start");
+                        this.parentElement.appendChild(this);
+                        newRadius = insertIcons(this.id, true);
+                        //console.log(newRadius);
                     }
 
                     d3.select(this).transition().duration(200)
@@ -335,11 +326,14 @@
             });
 
         // Determine the pack radius
-        return d3.max(disasterNodes, function (d) {
-            var x = Math.abs(d.x);
-            var y = Math.abs(d.y);
-            return Math.sqrt(x * x + y * y);
-        }) - 58;
+        if (disasterNodes.length != 0) {
+            return d3.max(disasterNodes, function (d) {
+                var x = Math.abs(d.x);
+                var y = Math.abs(d.y);
+                return Math.sqrt(x * x + y * y);
+            }) - 58;
+        }
+        else {return 30;}
     }
 
     function removeIcons(state) {
