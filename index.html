@@ -53,6 +53,15 @@
             fill: none;
             stroke: gray;
             stroke-width: 1px;
+            position: absolute;
+        }
+
+        #buttons {
+            margin-right: 5%;
+        }
+
+        .mainSvg {
+            margin-left: 8%;
         }
 
 
@@ -60,8 +69,8 @@
     </style>
 </head>
 <body>
-<svg width="300px" height="700px" id="buttons"></svg>
-<svg width="820px" height="700px" class="mainSvg"></svg>
+<svg width="850px" height="650px" class="mainSvg"></svg>
+<svg width="190px" height="650px" id="buttons"></svg>
 <script>
     var svg = d3.select(".mainSvg")
 
@@ -175,7 +184,7 @@
         states.enter().append("circle")
                 .attr("class", "state-circles")
                 .attr("cx", function(d) {return d.x * 64 + 60;})
-                .attr("cy", function(d) {return d.y * 64 + 60;})
+                .attr("cy", function(d) {return d.y * 64 + 50;})
                 .attr("id", function(d) {return d.name;})
                 .attr("r", 30)
                 .on("mouseover", function(d) {
@@ -183,10 +192,8 @@
 
                     updateText(this.id);
                     if(disastersByYear[this.id][currentYear] > 4) {
-                        console.log("start");
                         this.parentElement.appendChild(this);
                         newRadius = insertIcons(this.id, true);
-                        //console.log(newRadius);
                     }
 
                     d3.select(this).transition().duration(200)
@@ -255,9 +262,9 @@
         if(!expanded && stateIncidents.length > 4)
             stateIncidents = stateIncidents.slice(0, 4);
 
-        var offset = 30;
+        var offset = 20;
         if(expanded)
-            offset = 0;
+            offset = -10;
 
         var diameter = 60;
         if(expanded)
@@ -319,7 +326,7 @@
 
         d3.selectAll("." + stateID).transition().duration(200)
             .attr("x", function(d) {
-                return gridMap[gridMapDict[state]].x * 64 + d.x - 9 + offset;
+                return gridMap[gridMapDict[state]].x * 64 + d.x + offset;
             })
             .attr("y", function(d) {
                 return gridMap[gridMapDict[state]].y * 64 + d.y - 9 + offset;
@@ -378,10 +385,10 @@
         var yearText = svg.append("text")
             .text("2016")
             .attr("class", "bold year")
-            .attr("transform", "translate(47,580)");
+            .attr("transform", "translate(47,520)");
         var slider = svg.append("g")
             .attr("class", "slider")
-            .attr("transform", "translate(50,600)");
+            .attr("transform", "translate(50,540)");
     
         slider.append("line")
             .attr("class", "track")
@@ -449,89 +456,67 @@
        .attr("width", 350)
        .attr("height", 20)
        .style("fill", "url(#linear-gradient)")
-       .style("stroke", "black")
-       .attr("transform", "translate(50,660)");
+       .style("stroke", "gray")
+       .attr("transform", "translate(50,595)");
     var tempLabel = svg.append("text")
         .text("Temperature Scale")
         .attr("class", "light")
-        .attr("transform", "translate(47,635)");
+        .attr("transform", "translate(165,575)");
     var coldText = svg.append("text")
         .text("Below Avg.")
-        .attr("transform", "translate(50,655)");
+        .attr("transform", "translate(50,585)");
     var coldText = svg.append("text")
         .text("Above Avg.")
-        .attr("transform", "translate(325,655)");
+        .attr("transform", "translate(325,585)");
 
     //state info
     var stateText = svg.append("text")
         .attr("class", "bold")
-        .attr("transform", "translate(550,575)");
+        .attr("transform", "translate(575,540)");
     var tempText = svg.append("text")
         .attr("class", "light")
-        .attr("transform", "translate(550,600)");
+        .attr("transform", "translate(575,565)");
     var disasterText = svg.append("text")
         .attr("class", "light")
-        .attr("transform", "translate(550,625)");
+        .attr("transform", "translate(575,590)");
     
     //disaster key
-    var keyLabel = svg.append("text")
-        .text("Disaster Key")
-        .attr("class", "bold")
-        .attr("transform", "translate(700,330)");
     
-    var firePic = svg.append("svg:image")
+    var firePic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/fire.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,340)");
-    var fireText = svg.append("text")
-        .text("= Fire")
-        .attr("transform", "translate(695,355)");
+        .attr("transform", "translate(87,133)");
     
-    var winterPic = svg.append("svg:image")
+    var winterPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/winterstorm.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,360)");
-    var winterText = svg.append("text")
-        .text("= Winter Storm")
-        .attr("transform", "translate(695,375)");
+        .attr("transform", "translate(120,185)");
     
-    var droughtPic = svg.append("svg:image")
+    var droughtPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/drought.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,380)");
-    var droughtText = svg.append("text")
-        .text("= Drought")
-        .attr("transform", "translate(695,395)");
+        .attr("transform", "translate(102,234)");
     
-    var tropicalPic = svg.append("svg:image")
+    var tropicalPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/tropicalstorm.png")
         .attr("height", 18)
         .attr("width", 18)
-        .attr("transform", "translate(675,400)");
-    var tropicalText = svg.append("text")
-        .text("= Tropical Storm")
-        .attr("transform", "translate(695,415)");
+        .attr("transform", "translate(120,285)");
     
-    var floodPic = svg.append("svg:image")
+    var floodPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/severestorm.png")
-        .attr("height", 18)
-        .attr("width", 18)
-        .attr("transform", "translate(675,420)");
-    var severeStormText = svg.append("text")
-        .text("= Flooding")
-        .attr("transform", "translate(695,435)");
+        .attr("height", 23)
+        .attr("width", 23)
+        .attr("transform", "translate(115,333)");
     
-    var otherPic = svg.append("svg:image")
+    var otherPic = d3.select("#buttons").append("svg:image")
         .attr("xlink:href","images/other.png")
-        .attr("height", 18)
-        .attr("width", 18)
-        .attr("transform", "translate(675,440)");
-    var otherText = svg.append("text")
-        .text("= Other")
-        .attr("transform", "translate(695,455)");
+        .attr("height", 15)
+        .attr("width", 15)
+        .attr("transform", "translate(95,387)");
     
     
     // actual physical buttons
@@ -539,63 +524,77 @@
         var fire = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 125);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 125)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             fireButtonText.text("Fire");
 
         var winter = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 175);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 175)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             winterButtonText.text("Winter Storm");
 
         var drought = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 225);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 225)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             droughtButtonText.text("Drought");
 
         var tropical = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 275);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 275)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             tropicalButtonText.text("Tropical Storm");
 
         var severe = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 325);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 325)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
-            severeButtonText.text("Severe Storm/Flooding");
+            severeButtonText.text("Severe Storm");
 
         var other = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 375);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 375)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             otherButtonText.text("Other");
 
         var reset = d3.select("#buttons").append("rect")
             .attr("class", "button")
             .attr("height", 40)
-            .attr("width", 180)
-            .attr("x", 35)
-            .attr("y", 425);
+            .attr("width", 150)
+            .attr("x", 0)
+            .attr("y", 425)
+            .attr("rx", 10)
+            .attr("ry", 10);
 
             resetButtonText.text("Reset");
          
@@ -603,7 +602,7 @@
 
     // text + controlling icons
     var fireButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 148)")
+        .attr("transform", "translate(70, 148)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
@@ -613,7 +612,7 @@
             populateIcons();
         });
     var winterButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 200)")
+        .attr("transform", "translate(70, 200)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
@@ -623,7 +622,7 @@
             populateIcons();
         });
     var droughtButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 248)")
+        .attr("transform", "translate(70, 248)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
@@ -633,7 +632,7 @@
             populateIcons();
         });
     var tropicalButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 300)")
+        .attr("transform", "translate(65, 300)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
@@ -643,7 +642,7 @@
             populateIcons();
         });
     var severeButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 348)")
+        .attr("transform", "translate(65, 348)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
@@ -653,7 +652,7 @@
             populateIcons();
         });
     var otherButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 400)")
+        .attr("transform", "translate(70, 400)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
@@ -663,7 +662,7 @@
             populateIcons();
         });
     var resetButtonText = d3.select("#buttons").append("text")
-        .attr("transform", "translate(125, 448)")
+        .attr("transform", "translate(75, 448)")
         .attr("text-anchor", "middle")
         .on("click", function(d) {
             gridMap.forEach(function (b) {
