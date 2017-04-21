@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: 'Fira Sans', sans-serif;
+            margin: 0;
         }
 
         .bold {
@@ -80,6 +81,7 @@
 <body>
 <svg width="1080" height="650" class="mainSvg"></svg>
 <svg width="430" height="430" class="summarySvg"></svg>
+
 <script>
     var svg = d3.select(".mainSvg")
     var summarySvg = d3.select(".summarySvg");
@@ -198,6 +200,11 @@
 
     // Handle the map
     function drawMap() {
+        var title = svg.append("text").text("Temperature Change and Natural Disasters")
+            .attr("class", "bold")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(400, 50)")
+            .style("font-size", "32px");
         var states = svg.selectAll(".state-circles")
             .data(gridMap);
 
