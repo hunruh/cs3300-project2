@@ -7,6 +7,7 @@
     <style>
         body {
             font-family: 'Fira Sans', sans-serif;
+            margin: 0;
         }
 
         .bold {
@@ -69,6 +70,7 @@
     </style>
 </head>
 <body>
+
 <svg width="850px" height="650px" class="mainSvg"></svg>
 <svg width="190px" height="650px" id="buttons"></svg>
 <script>
@@ -187,6 +189,11 @@
     }
 
     function drawMap() {
+        var title = svg.append("text").text("Temperature Change and Natural Disasters")
+            .attr("class", "bold")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(375, 50)")
+            .style("font-size", "32px");
         var states = svg.selectAll(".state-circles")
             .data(gridMap);
 
