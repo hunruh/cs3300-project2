@@ -895,7 +895,7 @@
 
         var intercept = meanY - slope * meanX;
         summarySvg.append("line").attr("class", "regression")
-            .attr("x1", xScale(xExtent[0])).attr("y1", yScale((xExtent[0] - 1956) * slope + intercept))
+            .attr("x1", xScale((-intercept/slope) + 1956)).attr("y1", yScale((-intercept/slope) * slope + intercept))
             .attr("x2", xScale(xExtent[1])).attr("y2", yScale((xExtent[1] - 1956) * slope + intercept))
             .style("stroke", "#d6604d")
             .style("stroke-width", "2px")
