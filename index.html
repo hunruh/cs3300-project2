@@ -457,6 +457,11 @@ Natural disaster data courtesy of <a href="https://www.fema.gov/disasters/grid/y
 
     // Handle the slider
     function drawSlider() {
+        var tempLabel = svg.append("text")
+            .text("Slide to select a year")
+            .attr("class", "light")
+            .attr("transform", "translate(200,521)");
+
         var x = d3.scaleLinear()
             .domain([1956, 2016])
             .range([0, 350])
@@ -539,17 +544,22 @@ Natural disaster data courtesy of <a href="https://www.fema.gov/disasters/grid/y
        .attr("height", 20)
        .style("fill", "url(#linear-gradient)")
        .style("stroke", "gray")
-       .attr("transform", "translate(90,595)");
+       .attr("transform", "translate(90,575)");
     var tempLabel = svg.append("text")
         .text("Temperature Scale")
         .attr("class", "light")
-        .attr("transform", "translate(205,575)");
+        .attr("transform", "translate(205,615)");
     var coldText = svg.append("text")
         .text("Below Avg.")
-        .attr("transform", "translate(90,585)");
+        .attr("transform", "translate(90,615)");
     var coldText = svg.append("text")
         .text("Above Avg.")
-        .attr("transform", "translate(365,585)");
+        .attr("transform", "translate(365,615)");
+    svg.append("text")
+        .style("font-size", "11px")
+        .style("font-weight", 300)
+        .text("Degrees (F) difference between the state's average (1956-2016) and the selected year")
+        .attr("transform", "translate(90,635)");
 
     //state info
     var stateText = svg.append("text")
