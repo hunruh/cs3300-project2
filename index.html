@@ -99,6 +99,8 @@
 
 <p class="desc">
 The purpose of this visualization is to illustrate the drastic changes over the past half century in terms of both climate and natural disaster patterns. Comparing the first six years of data (1956 to 1961) to the last six years (2011-2016), it is very clear that there has been a sharp increase in natural disasters across the country. Nearly four times as many disasters in Texas alone in 2011 as there were in all of 1956. Furthermore, temperature patterns have become far more erratic in recent years, with both 2012 and 2016 showing multiple states with temperatures significantly higher than their averages.  We hope that this data illustrates not only the changes that are occurring in our climate, but also helps paint the picture of the very real consequences of these changes. It is difficult for the average person to understand the issues behind say, a three degree increase in a state's average temperature, but with natural disaster data, they can see first hand what those changes can bring.
+<br><br>
+The graph below shows the clearly upward trend in the number of natural disasters per year over the last 60 years (the red line is a trend line depicting the linear regression of the data).
 </p>
 
 <svg width="430" height="430" class="summarySvg"></svg>
@@ -881,7 +883,7 @@ Natural disaster data courtesy of <a href="https://www.fema.gov/disasters/grid/y
             .call(d3.axisBottom(xScale).tickFormat(d3.format(".4")))
             .attr("transform", "translate(0,385)");
         summarySvg.append("text")
-            .attr("transform", "translate(215, 415)")
+            .attr("transform", "translate(215, 420)")
             .attr("text-align", "center")
             .attr("text-anchor", "middle")
             .attr("font-weight", 600)
